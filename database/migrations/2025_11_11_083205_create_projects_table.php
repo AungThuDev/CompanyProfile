@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('project_url')->nullable();
             $table->date('start_date');
             $table->date('end_date');
-            $table->unsignedInteger('display_order');
+            $table->unsignedInteger('display_order')->default(1);
             
             $table->foreignId('created_by')
             ->nullable()

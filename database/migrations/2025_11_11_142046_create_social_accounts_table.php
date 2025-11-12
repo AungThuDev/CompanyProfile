@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('icon_url');
             $table->string('account_link');
             $table->text('description')->nullable();
-            $table->int('display_order');
+            $table->unsignedInteger('display_order')->default(1);
             $table->boolean('is_active');
             
             $table->foreignId('created_by')

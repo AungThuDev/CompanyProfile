@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('image');
             $table->text('description')->nullable();
-            $table->unsignedInteger('display_order');
+            $table->unsignedInteger('display_order')->default(1);
 
             $table->foreignId('created_by')
             ->nullable()
