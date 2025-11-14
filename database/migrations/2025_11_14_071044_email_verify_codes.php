@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('daily_visits', function (Blueprint $table) {
-            $table->id();
-            $table->date('date');
-            $table->string('page_url');
-            $table->int('total_pageviews');
-            $table->int('unique_visitors');
-            $table->timestamps();
+        Schema::create('email_verify_codes', function (Blueprint $table) {
+            $table->string('email')->primary();
+            $table->string('code');
+            $table->timestamp('expires_at');
         });
     }
 
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('daily_visits');
+        Schema::dropIfExists('password_reset_tokens');
     }
 };
