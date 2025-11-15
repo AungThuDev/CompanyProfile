@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('project_types', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('parent_id')->nullable()->constrained('project_types')->onDelete('cascade');
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();

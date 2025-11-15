@@ -11,7 +11,6 @@ class ProjectType extends Model
     use HasFactory;
 
     protected $fillable = [
-        'parent_id', 
         'name', 
         'slug', 
         'description',
@@ -24,12 +23,7 @@ class ProjectType extends Model
     { 
         return $this->hasMany(Project::class);
     }
-
-    public function parent()
-    { 
-        return $this->belongsTo(ProjectType::class, 'parent_id');
-    }
-
+    
 	public function creator(): BelongsTo
 	{
 		return $this->belongsTo(User::class, 'created_by');

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Backend\AuthController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\ProjectController;
+use App\Http\Controllers\Backend\ProjectTypeController;
 use App\Http\Controllers\Backend\ServiceController;
 use App\Http\Controllers\Backend\UserController;
 use Illuminate\Support\Facades\Route;
@@ -27,7 +29,8 @@ Route::middleware('auth')->group(function () {
         Route::match(['get', 'patch'], 'profile', [UserController::class, 'profile'])->name('profile');
 
         Route::resource('services', ServiceController::class);
-
+        Route::resource('project-types', ProjectTypeController::class);
+        Route::resource('projects', ProjectController::class);
     });
 
     // Logout
