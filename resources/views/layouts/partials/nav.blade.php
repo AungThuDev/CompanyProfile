@@ -1,15 +1,23 @@
 <header class="bg-white shadow-sm border-b border-gray-200 px-5 py-3">
     <div class="flex justify-between items-center">
-        <h1 class="text-xl font-semibold text-gray-800">@yield('title', 'Dashboard')</h1>
+        <h1 class="text-xl font-semibold text-gray-800">TechWave</h1>
 
         {{-- Profile Dropdown using Tailwind Plus Elements --}}
         <el-dropdown class="inline-block">
             <button class="inline-flex items-center gap-x-2 rounded-full bg-indigo-600 px-3 py-2 text-sm font-medium text-white inset-ring inset-ring-indigo-400/40 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1">
-                <div class="w-9 h-9 bg-indigo-700 rounded-full flex items-center justify-center">
-                    <span class="text-white text-sm font-semibold">
-                        {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
-                    </span>
+                {{-- Avatar --}}
+                <div class="w-9 h-9 rounded-full flex items-center justify-center bg-indigo-700 overflow-hidden">
+                    @if(auth()->user()->profile)
+                        <img src="{{ asset('storage/' . auth()->user()->profile) }}" 
+                            alt="{{ auth()->user()->name }}" 
+                            class="w-full h-full object-cover">
+                    @else
+                        <span class="text-white text-sm font-semibold">
+                            {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
+                        </span>
+                    @endif
                 </div>
+
                 <span class="hidden sm:block">
                     {{ auth()->user()->name ?? 'Admin' }}
                 </span>
@@ -28,10 +36,7 @@
                     <p class="text-xs text-gray-500 truncate">{{ auth()->user()->email ?? '' }}</p>
                 </div>
                 <div class="py-1">
-                    <a href="{{ route('dashboard.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                        Dashboard
-                    </a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                    <a href="{{ route('dashboard.profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
                         Profile
                     </a>
                     <button

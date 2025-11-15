@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Backend\AuthController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,8 @@ Route::redirect('/', '/dashboard');
 Route::middleware('auth')->group(function () { 
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('index');
+
+        Route::match(['get', 'patch'], 'profile', [UserController::class, 'profile'])->name('profile');
     });
 
     // Logout
@@ -28,16 +31,11 @@ Route::middleware('auth')->group(function () {
 });
 
 // Auth Routes (Guest Only)
-Route::prefix('auth')->name('auth.')->group(function () {
-    Route::match(['get', 'post'], 'login', [AuthController::class, 'login'])->name('login');
-
-    Route::match(['get', 'post'], 'forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot-password');
-
-    Route::match(['get', 'post'], 'reset-password', [AuthController::class, 'resetPassword'])->name('reset-password');
-
-    Route::match(['get', 'post'], 'verify-email', [AuthController::class, 'verifyEmail'])->name('verify-email');
-
-    Route::post('resend-email', [AuthController::class, 'resendEmail'])->name('resend-email');
-
+Route::prefix('auth')->name('auth.')->controller(AuthController::class)->group(function () {
+    Route::match(['get', 'post'], 'login', 'login')->name('login');
+    Route::match(['get', 'post'], 'forgot-password', 'forgotPassword')->name('forgot-password');
+    Route::match(['get', 'post'], 'reset-password', 'resetPassword')->name('reset-password');
+    Route::match(['get', 'post'], 'verify-email', 'verifyEmail')->name('verify-email');
+    Route::post('resend-email', 'resendEmail')->name('resend-email');
 });
 

@@ -1,10 +1,4 @@
 <aside class="w-60 bg-white shadow-sm border-r border-gray-200 hidden md:flex flex-col">
-     <!-- Sidebar Header / Brand -->
-     <div class="p-4 border-b border-gray-200">
-         <h2 class="text-lg font-semibold text-gray-800">TechWave</h2>
-         <p class="text-xs text-gray-500 mt-1">Admin Panel</p>
-     </div>
- 
      <!-- Navigation -->
      <nav class="flex-1 p-3 space-y-1">
          <a 
