@@ -12,7 +12,7 @@ use Exception;
 
 class UserRepository implements UserRepositoryInterface
 {
-    protected User $model;
+    protected $model;
 
     public function __construct(User $model)
     {

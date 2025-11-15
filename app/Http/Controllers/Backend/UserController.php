@@ -22,7 +22,7 @@ class UserController extends Controller
         $user = Auth::user();
 
         if ($request->isMethod('get')) {
-            return view('dashboard.user.profile', ['user' => $user]);
+            return view('dashboard.users.profile', ['user' => $user]);
         }
 
         $validated = $request->validate([
