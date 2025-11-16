@@ -10,7 +10,7 @@
     <div class="w-full max-w-sm">
         @yield('content')
     </div>
-    @vite('resources/js/app.js')
+    @vite('resources/js/dashboard.js')
 </body>
 </html>
 

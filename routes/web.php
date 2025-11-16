@@ -19,17 +19,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/', '/dashboard');
+Route::view('/', 'frontend.app');
 
 // Dashboard (Protected Routes)
-Route::middleware('auth')->group(function () { 
+Route::middleware('auth')->group(function () {
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('index');
 
         Route::prefix('users')
         ->name('users.')
         ->controller(UserController::class)
-        ->group(function () {   
+        ->group(function () {
             Route::get('', 'index')->name('index');
             Route::get('create', 'create')->name('create');
             Route::post('', 'store')->name('store');
