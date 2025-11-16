@@ -26,6 +26,17 @@ Route::middleware('auth')->group(function () {
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('index');
 
+        Route::prefix('users')
+        ->name('users.')
+        ->controller(UserController::class)
+        ->group(function () {   
+            Route::get('', 'index')->name('index');
+            Route::get('create', 'create')->name('create');
+            Route::post('', 'store')->name('store');
+            Route::get('/{user}', 'show')->name('show');
+            Route::patch('/{user}/suspend', 'suspend')->name('suspend');
+        });
+
         Route::match(['get', 'patch'], 'profile', [UserController::class, 'profile'])->name('profile');
 
         Route::resource('services', ServiceController::class);

@@ -42,7 +42,7 @@
                     <tr class="hover:bg-gray-50">
                         <td class="px-4 py-2 text-sm text-gray-700">{{ $index + 1 }}</td>
                         <td class="px-4 py-2 text-sm text-gray-900">{{ $type->name }}</td>
-                        <td class="px-4 py-2 text-sm text-gray-500">{{ Str::limit($type->description, 60) }}</td>
+                        <td class="px-4 py-2 text-sm text-gray-500">{{ Str::limit($type->description, 60) ?? 'N/A'}}</td>
                         <td class="px-4 py-2 text-sm text-gray-700">
                            {{ $type->display_order }}
                         </td>

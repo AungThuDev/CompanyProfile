@@ -38,6 +38,13 @@ class AuthController extends Controller
 
         // Attempt to authenticate
         if (Auth::attempt($credentials)) {
+            if(Auth::user()->suspended_at) { 
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Your account has been suspended.',
+                ])->onlyInput('email');
+            }
+
             if(!Auth::user()->email_verified_at) { 
                 Auth::logout();
 

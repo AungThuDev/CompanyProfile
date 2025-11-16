@@ -24,6 +24,7 @@ class User extends Authenticatable
         'address',
         'profile', 
         'bio',
+        'suspended_at',
         'password',
     ];
 
@@ -44,6 +45,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'suspended_at' => 'datetime',
         'password' => 'hashed',
     ];
 }

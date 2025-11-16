@@ -17,6 +17,51 @@ class UserController extends Controller
         $this->userRepository = $userRepository;
     }
 
+    public function index()
+    { 
+        $users = $this->userRepository->all();
+        return view('dashboard.users.index', compact('users'));
+    }
+
+    public function show($id)
+    {
+        $user = $this->userRepository->findById($id);
+        return view('dashboard.users.show', compact('user'));
+    }
+
+    public function create()
+    {
+        return view('dashboard.users.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => ['required','string','max:255'],
+            'email' => ['required','email','max:255','unique:users,email'],
+            'password' => ['required','string','min:6'],
+        ]);
+
+        $this->userRepository->create($validated);
+
+        return redirect()->route('dashboard.users.index')
+                         ->with('success', 'User created successfully!');
+    }
+
+    public function suspend(int $id)
+    {
+        try {
+            $this->userRepository->suspend($id);
+
+            return redirect()->route('dashboard.users.index')
+                            ->with('success', 'User suspension status updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('dashboard.users.index')
+                            ->withErrors(['error' => 'Failed to update user suspension.']);
+        }
+    }
+
+
     public function profile(Request $request)
     {
         $user = Auth::user();
