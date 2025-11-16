@@ -23,7 +23,8 @@ class ProjectRepository implements ProjectRepositoryInterface
 
     public function all()
     {
-        return $this->model->all();
+        return $this->model
+            ->all();
     }
 
     public function find(int $id)
@@ -39,6 +40,8 @@ class ProjectRepository implements ProjectRepositoryInterface
             $data['slug'] = Str::slug($data['title']);
             $data['image'] = $this->storeImage($file);
             $data['created_by'] = Auth::id();
+
+            $data['display_order'] = ($this->model->max('display_order') ?? 0) + 1;
 
             $project = $this->model->create($data);
 
@@ -87,11 +90,14 @@ class ProjectRepository implements ProjectRepositoryInterface
         $project = $this->find($id);
 
         DB::beginTransaction();
+
         try {
             $this->deleteOldImage($project->image);
             $project->delete();
+
             DB::commit();
             return true;
+
         } catch (Exception $e) {
             DB::rollBack();
             Log::error("Project deletion failed: {$e->getMessage()}");

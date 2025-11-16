@@ -4,10 +4,10 @@ namespace App\Repositories\Backend;
 
 use App\Contracts\Backend\ProjectTypeRepositoryInterface;
 use App\Models\ProjectType;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Exception;
 
 class ProjectTypeRepository implements ProjectTypeRepositoryInterface
@@ -21,7 +21,8 @@ class ProjectTypeRepository implements ProjectTypeRepositoryInterface
 
     public function all()
     {
-        return $this->model->orderBy('name')->get();
+        return $this->model
+            ->all();
     }
 
     public function find(int $id)
@@ -35,7 +36,11 @@ class ProjectTypeRepository implements ProjectTypeRepositoryInterface
         try {
             $data['slug'] = $this->generateSlug($data['name']);
             $data['created_by'] = Auth::id();
+
+            $data['display_order'] = ($this->model->max('display_order') ?? 0) + 1;
+
             $projectType = $this->model->create($data);
+
             DB::commit();
             return $projectType;
         } catch (Exception $e) {
@@ -53,8 +58,10 @@ class ProjectTypeRepository implements ProjectTypeRepositoryInterface
             if (isset($data['name']) && $data['name'] !== $projectType->name) {
                 $data['slug'] = $this->generateSlug($data['name']);
             }
+
             $data['updated_by'] = Auth::id();
             $projectType->update($data);
+
             DB::commit();
             return true;
         } catch (Exception $e) {

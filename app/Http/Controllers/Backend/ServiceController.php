@@ -35,10 +35,9 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title'         => ['required', 'string', 'max:255'],
-            'description'   => ['nullable', 'string'],
-            'display_order' => ['required', 'integer', 'min:1'],
-            'image'         => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'title'       => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'image'       => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
         $this->serviceRepository->create(

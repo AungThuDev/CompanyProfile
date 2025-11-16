@@ -52,14 +52,6 @@
                        class="block w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
             </div>
 
-            {{-- Project URL --}}
-            <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1.5">Project URL</label>
-                <input type="text" name="project_url"
-                       value="{{ old('project_url', $project->project_url) }}"
-                       class="block w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
-            </div>
-
             {{-- Description --}}
             <div>
                 <label class="block text-xs font-medium text-gray-700 mb-1.5">Description</label>
@@ -84,13 +76,31 @@
                 </div>
             </div>
 
-            {{-- Display Order --}}
-            <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1.5">Display Order <span class="text-red-500">*</span></label>
-                <input type="number" name="display_order"
-                       value="{{ old('display_order', $project->display_order) }}"
-                       class="block w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+            {{-- URL + Display Order in One Row --}}
+            <div class="grid grid-cols-2 gap-4">
+
+                {{-- Project URL --}}
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Project URL</label>
+                    <input type="text" name="project_url"
+                        value="{{ old('project_url', $project->project_url) }}"
+                        class="block w-full border border-gray-300 rounded-md px-3 py-2 text-sm 
+                                focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                {{-- Display Order --}}
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5">
+                        Display Order <span class="text-red-500">*</span>
+                    </label>
+                    <input type="number" name="display_order"
+                        value="{{ old('display_order', $project->display_order) }}"
+                        class="block w-full border border-gray-300 rounded-md px-3 py-2 text-sm 
+                                focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
             </div>
+
 
             {{-- Current Image --}}
             <div>

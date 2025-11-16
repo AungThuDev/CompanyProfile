@@ -22,10 +22,10 @@ class ProjectTypeController extends Controller
     }
 
     public function show(int $id)
-    { 
+    {
         $projectType = $this->projectTypeRepository->find($id);
         return view('dashboard.project-types.show', compact('projectType'));
-    }   
+    }
 
     public function create()
     {
@@ -37,13 +37,13 @@ class ProjectTypeController extends Controller
         $validated = $request->validate([
             'name'        => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'is_active'   => ['required', 'boolean'],
         ]);
 
         $this->projectTypeRepository->create($validated);
 
-        return redirect()->route('dashboard.project-types.index')
-                         ->with('success', 'Project type created successfully.');
+        return redirect()
+            ->route('dashboard.project-types.index')
+            ->with('success', 'Project type created successfully.');
     }
 
     public function edit(int $id)
@@ -57,20 +57,22 @@ class ProjectTypeController extends Controller
         $validated = $request->validate([
             'name'        => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'is_active'   => ['required', 'boolean'],
+            'display_order'=> ['required', 'integer', 'min:1'], 
         ]);
 
         $this->projectTypeRepository->update($id, $validated);
 
-        return redirect()->route('dashboard.project-types.index')
-                         ->with('success', 'Project type updated successfully.');
+        return redirect()
+            ->route('dashboard.project-types.index')
+            ->with('success', 'Project type updated successfully.');
     }
 
     public function destroy(int $id)
     {
         $this->projectTypeRepository->destroy($id);
 
-        return redirect()->route('dashboard.project-types.index')
-                         ->with('success', 'Project type deleted successfully.');
+        return redirect()
+            ->route('dashboard.project-types.index')
+            ->with('success', 'Project type deleted successfully.');
     }
 }

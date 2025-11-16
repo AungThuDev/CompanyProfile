@@ -14,7 +14,7 @@ class ProjectType extends Model
         'name', 
         'slug', 
         'description',
-        'is_active', 
+        'display_order',
         'created_by', 
         'updated_by',
     ];

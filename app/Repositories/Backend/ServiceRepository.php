@@ -23,7 +23,8 @@ class ServiceRepository implements ServiceRepositoryInterface
 
     public function all()
     {
-        return $this->model->all();
+        return $this->model
+            ->all();
     }
 
     public function find(int $id)
@@ -39,7 +40,9 @@ class ServiceRepository implements ServiceRepositoryInterface
             $data['slug'] = $this->generateSlug($data['title']);
             $data['image'] = $this->storeImage($file);
             $data['created_by'] = Auth::id();
-            
+
+            $data['display_order'] = ($this->model->max('display_order') ?? 0) + 1;
+
             $service = $this->model->create($data);
 
             DB::commit();
@@ -59,7 +62,6 @@ class ServiceRepository implements ServiceRepositoryInterface
         DB::beginTransaction();
 
         try {
-            // Update image if provided
             if ($file instanceof UploadedFile) {
                 $this->deleteOldImage($service->image);
                 $data['image'] = $this->storeImage($file);
@@ -67,7 +69,6 @@ class ServiceRepository implements ServiceRepositoryInterface
                 unset($data['image']);
             }
 
-            // Regenerate slug if title changed
             if (isset($data['title']) && $data['title'] !== $service->title) {
                 $data['slug'] = $this->generateSlug($data['title']);
             }
@@ -93,13 +94,10 @@ class ServiceRepository implements ServiceRepositoryInterface
         DB::beginTransaction();
 
         try {
-
-             $this->deleteOldImage($service->image);
+            $this->deleteOldImage($service->image);
             $service->delete();
 
             DB::commit();
-
-
             return true;
 
         } catch (Exception $e) {

@@ -32,7 +32,7 @@
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Active</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
                     <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
@@ -44,11 +44,7 @@
                         <td class="px-4 py-2 text-sm text-gray-900">{{ $type->name }}</td>
                         <td class="px-4 py-2 text-sm text-gray-500">{{ Str::limit($type->description, 60) }}</td>
                         <td class="px-4 py-2 text-sm text-gray-700">
-                            @if($type->is_active)
-                                <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">Active</span>
-                            @else
-                                <span class="px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs">Inactive</span>
-                            @endif
+                           {{ $type->display_order }}
                         </td>
                         <td class="px-4 py-2 text-sm text-gray-500">{{ $type->created_at->format('M d, Y') }}</td>
                         <td class="px-4 py-2 text-center flex justify-center gap-2">

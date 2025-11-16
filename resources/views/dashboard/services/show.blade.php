@@ -3,50 +3,85 @@
 @section('title', 'Service Details')
 
 @section('content')
-<div class="max-w-4xl mx-auto my-8">
+<div class="max-w-4xl mx-auto space-y-4">
 
-    {{-- Card Container --}}
-    <div class="bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
+    {{-- Header --}}
+    <div class="bg-white rounded-lg border border-gray-200 p-4">
+        <h1 class="text-lg font-semibold text-gray-900">{{ $service->title }}</h1>
+        <p class="text-xs text-gray-500 mt-1">Detailed information about this service</p>
+    </div>
 
-        {{-- Content --}}
-        <div class="p-6 space-y-4">
-            <h1 class="text-2xl font-bold text-gray-900">{{ $service->title }}</h1>
-            <p class="text-gray-500 text-sm">Detailed information about this service</p>
+    {{-- Details Card --}}
+    <div class="bg-white rounded-lg border border-gray-200 p-6 space-y-4">
 
-            <div class="border-t border-gray-200 pt-4 space-y-2 flex items-start gap-4">
-               {{-- Small Image --}}
-               <div class="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden border border-gray-200">
-                   @if($service->image && file_exists(storage_path('app/public/' . $service->image)))
-                       <img src="{{ asset('storage/' . $service->image) }}" 
-                            alt="{{ $service->title }}" 
-                            class="w-full h-full object-cover object-center">
-                   @else
-                       <div class="w-full h-full flex items-center justify-center bg-gray-100 text-gray-400 text-xs">
-                           No Image
-                       </div>
-                   @endif
-               </div>
-           
-               {{-- Details Text --}}
-               <div class="flex-1 space-y-1">
-                   <p class="text-gray-700"><span class="font-semibold">Description:</span> {{ $service->description ?? 'N/A' }}</p>
-                   <p class="text-gray-700"><span class="font-semibold">Display Order:</span> {{ $service->display_order }}</p>
-                   <p class="text-gray-700"><span class="font-semibold">Slug:</span> {{ $service->slug }}</p>
-                   <p class="text-gray-700"><span class="font-semibold">Creator:</span> {{ $service->creator->name ?? 'N/A' }}</p>
-                   <p class="text-gray-700"><span class="font-semibold">Updator:</span> {{ $service->updator->name ?? 'N/A' }}</p>
-                   <p class="text-gray-700"><span class="font-semibold">Created At:</span> {{ $service->created_at->format('M d, Y') }}</p>
-                   <p class="text-gray-700"><span class="font-semibold">Updated At:</span> {{ $service->updated_at->format('M d, Y') }}</p>
-               </div>
-           </div>
-           
+        {{-- Image --}}
+        <div class="flex justify-center mb-4">
+            @if($service->image && file_exists(storage_path('app/public/' . $service->image)))
+                <img src="{{ asset('storage/' . $service->image) }}" 
+                     alt="{{ $service->title }}" 
+                     class="h-48 w-48 object-cover rounded-md border">
+            @else
+                <div class="h-48 w-48 flex items-center justify-center bg-gray-100 text-gray-400 rounded-md border">
+                    No Image
+                </div>
+            @endif
+        </div>
 
-            {{-- Actions --}}
-            <div class="flex flex-wrap gap-3 pt-4">
-                <a href="{{ route('dashboard.services.edit', $service->id) }}" 
-                   class="px-5 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">Edit</a>
-                <a href="{{ route('dashboard.services.index') }}" 
-                   class="px-5 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">Back</a>
+        {{-- Form-style Details --}}
+        <div class="grid grid-cols-2 gap-4">
+
+            <div>
+                <label class="block text-xs font-medium text-gray-700">Title</label>
+                <p class="mt-1 text-gray-900">{{ $service->title }}</p>
             </div>
+
+            <div>
+                <label class="block text-xs font-medium text-gray-700">Display Order</label>
+                <p class="mt-1 text-gray-900">{{ $service->display_order }}</p>
+            </div>
+
+            <div class="col-span-2">
+                <label class="block text-xs font-medium text-gray-700">Description</label>
+                <p class="mt-1 text-gray-900">{{ $service->description ?? 'N/A' }}</p>
+            </div>
+
+            <div>
+                <label class="block text-xs font-medium text-gray-700">Slug</label>
+                <p class="mt-1 text-gray-900">{{ $service->slug }}</p>
+            </div>
+
+            <div>
+                <label class="block text-xs font-medium text-gray-700">Creator</label>
+                <p class="mt-1 text-gray-900">{{ $service->creator->name ?? 'N/A' }}</p>
+            </div>
+
+            <div>
+                <label class="block text-xs font-medium text-gray-700">Updator</label>
+                <p class="mt-1 text-gray-900">{{ $service->updator->name ?? 'N/A' }}</p>
+            </div>
+
+            <div>
+                <label class="block text-xs font-medium text-gray-700">Created At</label>
+                <p class="mt-1 text-gray-900">{{ $service->created_at->format('M d, Y') }}</p>
+            </div>
+
+            <div>
+                <label class="block text-xs font-medium text-gray-700">Updated At</label>
+                <p class="mt-1 text-gray-900">{{ $service->updated_at->format('M d, Y') }}</p>
+            </div>
+
+        </div>
+
+        {{-- Actions --}}
+        <div class="flex justify-end gap-2 pt-4">
+            <a href="{{ route('dashboard.services.index') }}" 
+               class="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
+               Back
+            </a>
+            <a href="{{ route('dashboard.services.edit', $service->id) }}" 
+               class="px-4 py-2 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">
+               Edit
+            </a>
         </div>
 
     </div>
