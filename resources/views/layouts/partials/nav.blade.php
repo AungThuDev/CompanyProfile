@@ -1,6 +1,9 @@
 <header class="bg-white shadow-sm border-b border-gray-200 px-5 py-3">
     <div class="flex justify-between items-center">
-        <h1 class="text-xl font-semibold text-gray-800">TechWave</h1>
+        <a href="{{ route('dashboard.index') }}" class="block">
+            <h1 class="text-xl font-semibold text-gray-800">TechWave</h1>
+        </a>
+        
 
         {{-- Profile Dropdown using Tailwind Plus Elements --}}
         <el-dropdown class="inline-block">
