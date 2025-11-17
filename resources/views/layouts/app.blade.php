@@ -26,6 +26,6 @@
 
 
     {{-- JS --}}
-    @vite('resources/js/app.js')
+    @vite('resources/js/dashboard.js')
 </body>
 </html>
