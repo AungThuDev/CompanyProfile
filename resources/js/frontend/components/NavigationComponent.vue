@@ -68,7 +68,6 @@ const isOpen = ref(false)
 const navItems = ['Services', 'Portfolio', 'Blog', 'About', 'Contact']
 
 const scrollToSection = (item) => {
-console.log(item);
   const section = document.getElementById(item.toLowerCase())
   if (section) {
     section.scrollIntoView({ behavior: 'smooth', block: 'start' })

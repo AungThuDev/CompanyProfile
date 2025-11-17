@@ -6,8 +6,11 @@
     <title>TechWave — Company Profile</title>
     @vite('resources/css/app.css')
 </head>
-<body class="min-h-screen bg-white">
-    <div id="vue-app"></div>
+<body class="min-h-screen bg-black">
+
+    <div id="mixed-app"
+         data-initial='@json($initialState)'
+    ></div>
     @vite('resources/js/app.js')
 </body>
 </html>

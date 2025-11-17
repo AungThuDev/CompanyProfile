@@ -3,12 +3,14 @@ import "@tailwindplus/elements";
 import { createApp } from 'vue'
 import { MotionPlugin } from '@vueuse/motion'
 
-import router from './frontend/router'
 import App from './frontend/App.vue'
 
-const app = createApp(App)
-app.use(router)
+const el = document.getElementById('mixed-app');
+const initialState = JSON.parse(el.dataset.initial);
+const app = createApp(App, {
+    initialState: initialState
+})
 app.use(MotionPlugin)
-app.mount('#vue-app')
+app.mount('#mixed-app')
 
 

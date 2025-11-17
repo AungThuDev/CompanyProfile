@@ -15,8 +15,8 @@
       <!-- Services Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div
-          v-for="(service, index) in services"
-          :key="service.title"
+          v-for="(service, index) in servicesWithIcon"
+          :key="service.id"
           ref="el => serviceRefs[index] = el"
           class="group relative p-8 rounded-2xl bg-gradient-to-br from-white/5 to-white/0 border border-white/10 hover:border-blue-500/50 transition-all duration-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.15)]"
         >
@@ -52,15 +52,27 @@
 import { ref, onMounted } from 'vue'
 import { useMotion } from '@vueuse/motion'
 import { Code2, Palette, Smartphone, Cloud, Lock, Zap } from 'lucide-vue-next'
+import ImageWithFallback from './figma/ImageWithFallback.vue'
 
-const services = [
-  { icon: Code2, title: 'Web Development', description: 'Custom web applications built with modern frameworks and best practices.' },
-  { icon: Smartphone, title: 'Mobile Apps', description: 'Native and cross-platform mobile solutions for iOS and Android.' },
-  { icon: Palette, title: 'UI/UX Design', description: 'Beautiful, intuitive interfaces that users love to interact with.' },
-  { icon: Cloud, title: 'Cloud Solutions', description: 'Scalable cloud infrastructure and deployment strategies.' },
-  { icon: Lock, title: 'Security', description: 'Enterprise-grade security implementations and compliance.' },
-  { icon: Zap, title: 'Performance', description: 'Lightning-fast applications optimized for speed and efficiency.' },
-]
+const props = defineProps({
+  services: {
+    type: Array,
+    default: () => []
+  }
+})
+const iconArray = [Code2, Palette, Smartphone, Cloud, Lock, Zap]
+const servicesWithIcon = props.services.map(s => ({
+  ...s,
+  icon: iconArray[Math.floor(Math.random() * iconArray.length)]
+}))
+// const services = [
+//   { icon: Code2, title: 'Web Development', description: 'Custom web applications built with modern frameworks and best practices.' },
+//   { icon: Smartphone, title: 'Mobile Apps', description: 'Native and cross-platform mobile solutions for iOS and Android.' },
+//   { icon: Palette, title: 'UI/UX Design', description: 'Beautiful, intuitive interfaces that users love to interact with.' },
+//   { icon: Cloud, title: 'Cloud Solutions', description: 'Scalable cloud infrastructure and deployment strategies.' },
+//   { icon: Lock, title: 'Security', description: 'Enterprise-grade security implementations and compliance.' },
+//   { icon: Zap, title: 'Performance', description: 'Lightning-fast applications optimized for speed and efficiency.' },
+// ]
 
 // Refs for animations
 const headerRef = ref(null)

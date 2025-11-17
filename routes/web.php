@@ -7,6 +7,8 @@ use App\Http\Controllers\Backend\ProjectTypeController;
 use App\Http\Controllers\Backend\ServiceController;
 use App\Http\Controllers\Backend\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Frontend\FrontendController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +21,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'frontend.app');
+Route::get('/', [FrontendController::class, 'index'])->name('frontend.index');
+
 
 // Dashboard (Protected Routes)
 Route::middleware('auth')->group(function () {
