@@ -17,7 +17,7 @@ class ProjectTypeController extends Controller
 
     public function index()
     {
-        $projectTypes = $this->projectTypeRepository->all();
+        $projectTypes = $this->projectTypeRepository->paginate();
         return view('dashboard.project-types.index', compact('projectTypes'));
     }
 

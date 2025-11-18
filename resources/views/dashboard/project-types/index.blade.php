@@ -38,38 +38,59 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">
-                @forelse($projectTypes as $index => $type)
+                @forelse($projectTypes as $type)
                     <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-2 text-sm text-gray-700">{{ $index + 1 }}</td>
+                        {{-- Accurate row number across pagination --}}
+                        <td class="px-4 py-2 text-sm text-gray-700">
+                            {{ ($projectTypes->currentPage() - 1) * $projectTypes->perPage() + $loop->iteration }}
+                        </td>
+
                         <td class="px-4 py-2 text-sm text-gray-900">{{ $type->name }}</td>
-                        <td class="px-4 py-2 text-sm text-gray-500">{{ Str::limit($type->description, 60) ?? 'N/A'}}</td>
+
+                        <td class="px-4 py-2 text-sm text-gray-500">
+                            {{ Str::limit($type->description, 60) ?? 'N/A' }}
+                        </td>
+
                         <td class="px-4 py-2 text-sm text-gray-700">
                            {{ $type->display_order }}
                         </td>
+
                         <td class="px-4 py-2 text-sm text-gray-500">{{ $type->created_at->format('M d, Y') }}</td>
+
                         <td class="px-4 py-2 text-center flex justify-center gap-2">
                             <a href="{{ route('dashboard.project-types.show', $type->id) }}" 
                                class="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200">View</a>
+
                             <a href="{{ route('dashboard.project-types.edit', $type->id) }}" 
                                class="px-2 py-1 text-xs bg-indigo-600 text-white rounded hover:bg-indigo-700">Edit</a>
+
                             <form action="{{ route('dashboard.project-types.destroy', $type->id) }}" method="POST" class="inline-block">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" 
+                                <button type="submit"
                                         onclick="return confirm('Are you sure you want to delete this project type?')"
-                                        class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700">Delete</button>
+                                        class="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700">
+                                    Delete
+                                </button>
                             </form>
                         </td>
                     </tr>
                 @empty
                     <tr>
                         <td colspan="6" class="px-4 py-4 text-center text-gray-500 text-sm">
-                            No project types found. <a href="{{ route('dashboard.project-types.create') }}" class="text-indigo-600 underline">Create one</a>
+                            No project types found. 
+                            <a href="{{ route('dashboard.project-types.create') }}" 
+                               class="text-indigo-600 underline">Create one</a>
                         </td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
+    </div>
+
+    {{-- Pagination --}}
+    <div class="mt-4">
+        {{ $projectTypes->links('pagination::tailwind') }}
     </div>
 
 </div>
