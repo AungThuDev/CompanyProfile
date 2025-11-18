@@ -85,6 +85,11 @@
                 @endforelse
             </tbody>
         </table>
+
+        {{-- Pagination --}}
+        <div class="mt-4 p-4 border-t border-gray-200">
+            {{ $users->links() }}
+        </div>
     </div>
 
 </div>

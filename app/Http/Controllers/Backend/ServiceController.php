@@ -17,12 +17,12 @@ class ServiceController extends Controller
 
     public function index()
     {
-        $services = $this->serviceRepository->all();
+        $services = $this->serviceRepository->paginate();
         return view('dashboard.services.index', compact('services'));
     }
 
     public function show(int $id)
-    { 
+    {
         $service = $this->serviceRepository->find($id);
         return view('dashboard.services.show', compact('service'));
     }
@@ -35,53 +35,67 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title'       => ['required', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'image'       => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'image' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
-        $this->serviceRepository->create(
-            $validated,
-            $request->file('image')
-        );
-
-        return redirect()
-            ->route('dashboard.services.index')
-            ->with('success', 'Service created successfully.');
+        try {
+            $this->serviceRepository->create($validated, $request->file('image'));
+            return redirect()
+                ->route('dashboard.services.index')
+                ->with('success', 'Service created successfully.');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['error' => 'Failed to create service. Please try again.'])
+                ->withInput();
+        }
     }
 
     public function edit($id)
     {
-        $service = $this->serviceRepository->find($id);
-        return view('dashboard.services.edit', compact('service'));
+        try {
+            $service = $this->serviceRepository->find($id);
+            return view('dashboard.services.edit', compact('service'));
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('dashboard.services.index')
+                ->withErrors(['error' => 'Service not found or cannot be loaded.']);
+        }
     }
 
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'title'         => ['required', 'string', 'max:255'],
-            'description'   => ['nullable', 'string'],
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
             'display_order' => ['required', 'integer', 'min:1'],
-            'image'         => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
-        $this->serviceRepository->update(
-            $id,
-            $validated,
-            $request->file('image') 
-        );
-
-        return redirect()
-            ->route('dashboard.services.index')
-            ->with('success', 'Service updated successfully.');
+        try {
+            $this->serviceRepository->update($id, $validated, $request->file('image'));
+            return redirect()
+                ->route('dashboard.services.index')
+                ->with('success', 'Service updated successfully.');
+        } catch (\Exception $e) {
+            return back()
+                ->withErrors(['error' => 'Failed to update service. Please try again.'])
+                ->withInput();
+        }
     }
 
     public function destroy($id)
     {
-        $this->serviceRepository->destroy($id);
-
-        return redirect()
-            ->route('dashboard.services.index')
-            ->with('success', 'Service deleted successfully.');
+        try {
+            $this->serviceRepository->destroy($id);
+            return redirect()
+                ->route('dashboard.services.index')
+                ->with('success', 'Service deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('dashboard.services.index')
+                ->withErrors(['error' => 'Failed to delete service. Please try again.']);
+        }
     }
 }

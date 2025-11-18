@@ -27,6 +27,11 @@ class ServiceRepository implements ServiceRepositoryInterface
             ->all();
     }
 
+    public function paginate(int $perPage = 10)
+    { 
+        return $this->model->paginate($perPage);
+    }
+
     public function find(int $id)
     {
         return $this->model->findOrFail($id);

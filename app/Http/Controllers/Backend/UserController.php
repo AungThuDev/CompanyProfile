@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Contracts\Backend\UserRepositoryInterface;
+use Exception;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
@@ -19,7 +20,7 @@ class UserController extends Controller
 
     public function index()
     { 
-        $users = $this->userRepository->all();
+        $users = $this->userRepository->paginate();
         return view('dashboard.users.index', compact('users'));
     }
 
@@ -42,10 +43,15 @@ class UserController extends Controller
             'password' => ['required','string','min:6'],
         ]);
 
-        $this->userRepository->create($validated);
-
-        return redirect()->route('dashboard.users.index')
-                         ->with('success', 'User created successfully!');
+        try { 
+            $this->userRepository->create($validated);
+            return redirect()->route('dashboard.users.index')
+                             ->with('success', 'User created successfully!');
+        }catch(Exception $e) { 
+            return back()
+            ->withErrors(['error' => 'Failed to create user. Please try again.'])
+            ->withInput();
+        }
     }
 
     public function suspend(int $id)

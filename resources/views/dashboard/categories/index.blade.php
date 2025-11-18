@@ -24,6 +24,17 @@
         </div>
     @endif
 
+    {{-- Error Message --}}
+    @if ($errors->any())
+    <div class="bg-red-50 border-l-4 border-red-500 p-3 rounded-lg">
+        <ul class="text-xs text-red-700 list-disc list-inside">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
     {{-- Table Card --}}
     <div class="bg-white rounded-lg border border-gray-200 overflow-x-auto">
 
