@@ -76,7 +76,7 @@
             Categories
         </a>
         <a 
-            href="#" 
+            href="{{ route('dashboard.tags.index') }}" 
             class="flex items-center px-3 py-2.5 text-sm text-gray-700 rounded-md hover:bg-indigo-50 hover:text-indigo-700 transition duration-200 {{ request()->routeIs('dashboard.tags.*') ? 'bg-indigo-50 text-indigo-700 font-medium' : '' }}"
         >
             <svg class="w-5 h-5 mr-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
