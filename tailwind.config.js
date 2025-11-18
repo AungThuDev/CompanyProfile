@@ -6,6 +6,7 @@ export default {
         "./resources/**/*.js",
         "./resources/**/*.vue",
         "./node_modules/@tailwindplus/elements/dist/**/*.js",
+        "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php",
     ],
     theme: {
         extend: {},

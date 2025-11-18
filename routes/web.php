@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Backend\AuthController;
+use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\ProjectTypeController;
@@ -45,6 +46,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('services', ServiceController::class);
         Route::resource('project-types', ProjectTypeController::class);
         Route::resource('projects', ProjectController::class);
+        Route::resource('categories',CategoryController::class);
     });
 
     // Logout
