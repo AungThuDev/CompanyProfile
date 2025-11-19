@@ -120,19 +120,50 @@
                 <p class="text-xs text-indigo-600">Phone: {{ $activeCompany->phone ?? 'N/A' }}</p>
             </a>
         @else
+        <a href="{{ route('dashboard.company-infos.index') }}">
             <p class="text-xs text-gray-400 text-center">No active company info set.</p>
+        </a>
         @endif
 
-        {{-- Social Accounts --}}
-        <div class="flex justify-center space-x-3 mt-2">
-            <a href="#" class="text-indigo-600 hover:text-indigo-800" title="Social Accounts">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M22.46 6c-.77.35-1.5.59-2.32.69a4.08 4.08 0 001.8-2.27c-.79.46-1.66.8-2.59.98A4.12 4.12 0 0015.5 4c-2.27 0-4.11 1.84-4.11 4.11 0 .32.04.63.1.93-3.42-.17-6.45-1.81-8.47-4.31a4.08 4.08 0 00-.56 2.07c0 1.43.73 2.69 1.85 3.42a4.09 4.09 0 01-1.86-.51v.05c0 1.99 1.42 3.65 3.3 4.03a4.1 4.1 0 01-1.85.07c.52 1.63 2.04 2.82 3.83 2.85a8.23 8.23 0 01-5.1 1.76c-.33 0-.66-.02-.99-.06a11.63 11.63 0 006.29 1.84c7.55 0 11.68-6.26 11.68-11.68 0-.18-.01-.35-.02-.53A8.36 8.36 0 0024 4.56a8.19 8.19 0 01-2.36.65z"/>
-                </svg>
-            </a>
-        </div>
+        @if($activeCompany && $activeCompany->socialAccounts->isNotEmpty())
+            <a href="{{ route('dashboard.social-accounts.index') }}"
+            class="block bg-indigo-50 rounded-lg p-3 hover:bg-indigo-100 transition group">
+        
+            {{-- Title Section --}}
+            <div class="flex items-center justify-between">
+                <p class="text-xs font-semibold text-indigo-800">Social Accounts</p>
+                <span class="text-[10px] text-indigo-500 group-hover:text-indigo-700">
+                    Manage →
+                </span>
+            </div>
+            
+        
+            {{-- Social Icons --}}
+            <div class="flex justify-center space-x-3 mt-3">
+                @foreach($activeCompany->socialAccounts as $account)
+                    <a href="{{ $account->account_link }}"
+                        onclick="event.stopPropagation();"
+                        target="_blank"
+                        class="p-1.5 bg-white border border-indigo-200 rounded-md shadow-sm
+                            hover:bg-indigo-50 hover:border-indigo-400 transition">
+        
+                        <img src="{{ asset('storage/' . $account->logo) }}"
+                            alt="{{ $account->name }}"
+                            class="w-5 h-5">
+                    </a>
+                @endforeach
+            </div>
+        
+            {{-- Footer Text --}}
+            <p class="text-[11px] text-center text-indigo-600 mt-2 opacity-80 group-hover:opacity-100">
+                Click to manage all social accounts
+            </p>
+        </a>
+        @else
+        <a href="{{ route('dashboard.social-accounts.index') }}" class="block mt-2">
+            <p class="text-xs text-gray-400 text-center">No active social accounts.</p>
+        </a>
+        @endif
 
     </div>
-
-
 </aside>

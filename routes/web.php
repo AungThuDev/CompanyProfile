@@ -8,6 +8,7 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\ProjectTypeController;
 use App\Http\Controllers\Backend\ServiceController;
+use App\Http\Controllers\Backend\SocialAccountController;
 use App\Http\Controllers\Backend\TagController;
 use App\Http\Controllers\Backend\UserController;
 use Illuminate\Support\Facades\Route;
@@ -53,6 +54,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('tags', TagController::class);
         Route::resource('articles', ArticleController::class);
         Route::resource('company-infos', CompanyInfoController::class);
+        Route::resource('social-accounts', SocialAccountController::class);
     });
 
     // Logout
