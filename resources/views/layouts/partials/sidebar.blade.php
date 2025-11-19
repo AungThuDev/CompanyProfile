@@ -1,7 +1,7 @@
 <aside class="w-60 bg-white shadow-sm border-r border-gray-200 hidden md:flex flex-col">
 
     {{-- Navigation --}}
-    <nav class="flex-1 p-3 space-y-2">
+    <nav class="flex-1 p-3 space-y-2 overflow-y-auto">
 
         {{-- Dashboard Section --}}
         <p class="px-3 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Dashboard</p>
@@ -15,7 +15,6 @@
             Dashboard
         </a>
 
-        {{-- Divider --}}
         <div class="border-t border-gray-200 my-2"></div>
 
         {{-- User Management Section --}}
@@ -111,12 +110,29 @@
 
     </nav>
 
-    {{-- Sidebar Footer / Support --}}
-    <div class="p-3 border-t border-gray-200">
-        <div class="bg-indigo-50 rounded-md p-2.5">
-            <p class="text-xs text-indigo-800 font-medium">Need Help?</p>
-            <p class="text-xs text-indigo-600 mt-1">Contact support</p>
+    {{-- Sidebar Footer --}}
+    <div class="p-3 border-t border-gray-200 space-y-3">
+        @if($activeCompany)
+            <a href="{{ route('dashboard.company-infos.index') }}" class="block bg-indigo-50 rounded-md p-2.5 text-center hover:bg-indigo-100 transition">
+                <p class="text-sm font-semibold text-indigo-800">{{ $activeCompany->name }}</p>
+                <p class="text-xs text-indigo-600">Address: {{ $activeCompany->address ?? 'N/A' }}</p>
+                <p class="text-xs text-indigo-600">Email: {{ $activeCompany->email ?? 'N/A' }}</p>
+                <p class="text-xs text-indigo-600">Phone: {{ $activeCompany->phone ?? 'N/A' }}</p>
+            </a>
+        @else
+            <p class="text-xs text-gray-400 text-center">No active company info set.</p>
+        @endif
+
+        {{-- Social Accounts --}}
+        <div class="flex justify-center space-x-3 mt-2">
+            <a href="#" class="text-indigo-600 hover:text-indigo-800" title="Social Accounts">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M22.46 6c-.77.35-1.5.59-2.32.69a4.08 4.08 0 001.8-2.27c-.79.46-1.66.8-2.59.98A4.12 4.12 0 0015.5 4c-2.27 0-4.11 1.84-4.11 4.11 0 .32.04.63.1.93-3.42-.17-6.45-1.81-8.47-4.31a4.08 4.08 0 00-.56 2.07c0 1.43.73 2.69 1.85 3.42a4.09 4.09 0 01-1.86-.51v.05c0 1.99 1.42 3.65 3.3 4.03a4.1 4.1 0 01-1.85.07c.52 1.63 2.04 2.82 3.83 2.85a8.23 8.23 0 01-5.1 1.76c-.33 0-.66-.02-.99-.06a11.63 11.63 0 006.29 1.84c7.55 0 11.68-6.26 11.68-11.68 0-.18-.01-.35-.02-.53A8.36 8.36 0 0024 4.56a8.19 8.19 0 01-2.36.65z"/>
+                </svg>
+            </a>
         </div>
+
     </div>
+
 
 </aside>

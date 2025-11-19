@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Contracts\ArticleRepositoryInterface;
 use App\Contracts\CategoryRepositoryInterface;
+use App\Contracts\CompanyInfoRepositoryInterface;
 use App\Contracts\ProjectRepositoryInterface;
 use App\Contracts\ProjectTypeRepositoryInterface;
 use App\Contracts\ServiceRepositoryInterface;
@@ -11,6 +12,7 @@ use App\Contracts\TagRepositoryInterface;
 use App\Contracts\UserRepositoryInterface;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
+use App\Repositories\CompanyInfoRepository;
 use App\Repositories\ProjectRepository;
 use App\Repositories\ProjectTypeRepository;
 use App\Repositories\ServiceRepository;
@@ -33,6 +35,7 @@ class RepositoryServiceProvider extends ServiceProvider
             CategoryRepositoryInterface::class => CategoryRepository::class,
             TagRepositoryInterface::class => TagRepository::class,
             ArticleRepositoryInterface::class => ArticleRepository::class,
+            CompanyInfoRepositoryInterface::class => CompanyInfoRepository::class,
         ];
 
         foreach($repositories as $interface => $implementation) {

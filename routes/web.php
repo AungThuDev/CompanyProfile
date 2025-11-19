@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\ArticleController;
 use App\Http\Controllers\Backend\AuthController;
 use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Backend\CompanyInfoController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\ProjectTypeController;
@@ -51,6 +52,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('categories',CategoryController::class);
         Route::resource('tags', TagController::class);
         Route::resource('articles', ArticleController::class);
+        Route::resource('company-infos', CompanyInfoController::class);
     });
 
     // Logout
