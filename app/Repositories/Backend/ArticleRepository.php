@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleRepository implements ArticleRepositoryInterface
 {
@@ -48,6 +49,8 @@ class ArticleRepository implements ArticleRepositoryInterface
                 $data['image'] = $this->storeImage($file);
             }
 
+            $data['created_by'] = Auth::id();
+
             $data['reading_time'] = $this->calculateReadingTime($data['content']);
 
             $article = $this->model->create($data);
@@ -85,6 +88,8 @@ class ArticleRepository implements ArticleRepositoryInterface
                 $this->deleteOldImage($article->image);
                 $data['image'] = $this->storeImage($file);
             }
+
+            $article['updated_by'] = Auth::id();
 
             $article->update($data);
 

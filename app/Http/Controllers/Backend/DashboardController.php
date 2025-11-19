@@ -6,6 +6,9 @@ use App\Contracts\Backend\ProjectRepositoryInterface;
 use App\Contracts\Backend\ProjectTypeRepositoryInterface;
 use App\Contracts\Backend\ServiceRepositoryInterface;
 use App\Contracts\Backend\UserRepositoryInterface;
+use App\Contracts\Backend\CategoryRepositoryInterface;
+use App\Contracts\Backend\TagRepositoryInterface;
+use App\Contracts\Backend\ArticleRepositoryInterface;
 use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
@@ -14,26 +17,50 @@ class DashboardController extends Controller
     protected ProjectTypeRepositoryInterface $projectTypeRepository;
     protected ProjectRepositoryInterface $projectRepository;
     protected ServiceRepositoryInterface $serviceRepository;
+    protected CategoryRepositoryInterface $categoryRepository;
+    protected TagRepositoryInterface $tagRepository;
+    protected ArticleRepositoryInterface $articleRepository;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
         ProjectTypeRepositoryInterface $projectTypeRepository, 
         ProjectRepositoryInterface $projectRepository, 
-        ServiceRepositoryInterface $serviceRepository, 
+        ServiceRepositoryInterface $serviceRepository,
+        CategoryRepositoryInterface $categoryRepository,
+        TagRepositoryInterface $tagRepository,
+        ArticleRepositoryInterface $articleRepository
     )
     {
         $this->userRepository = $userRepository;
         $this->projectTypeRepository = $projectTypeRepository;
         $this->projectRepository = $projectRepository;
         $this->serviceRepository = $serviceRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->tagRepository = $tagRepository;
+        $this->articleRepository = $articleRepository;
     }
+
     public function index()
     { 
         $userCount = count($this->userRepository->all());
         $projectTypeCount = count($this->projectTypeRepository->all());
         $projectCount = count($this->projectRepository->all());
         $serviceCount = count($this->serviceRepository->all());
+        $categoryCount = count($this->categoryRepository->all());
+        $tagCount = count($this->tagRepository->all());
+        $articleCount = count($this->articleRepository->all());
 
-        return view('dashboard.index', compact('userCount', 'projectTypeCount', 'projectCount', 'serviceCount'));
+        return view(
+            'dashboard.index', 
+            compact(
+                'userCount', 
+                'projectTypeCount', 
+                'projectCount', 
+                'serviceCount', 
+                'categoryCount', 
+                'tagCount', 
+                'articleCount'
+            )
+        );
     }
 }

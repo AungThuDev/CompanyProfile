@@ -27,5 +27,23 @@
         <h3 class="text-sm font-medium text-gray-600">Services</h3>
         <p class="text-2xl font-bold mt-2 text-gray-900">{{ $serviceCount }}</p>
     </a>
+
+    {{-- Categories Card --}}
+    <a href="{{ route('dashboard.categories.index') }}" class="block bg-white p-5 rounded-lg border border-gray-200 hover:shadow-md transition">
+        <h3 class="text-sm font-medium text-gray-600">Categories</h3>
+        <p class="text-2xl font-bold mt-2 text-gray-900">{{ $categoryCount }}</p>
+    </a>
+
+    {{-- Tags Card --}}
+    <a href="{{ route('dashboard.tags.index') }}" class="block bg-white p-5 rounded-lg border border-gray-200 hover:shadow-md transition">
+        <h3 class="text-sm font-medium text-gray-600">Tags</h3>
+        <p class="text-2xl font-bold mt-2 text-gray-900">{{ $tagCount }}</p>
+    </a>
+
+    {{-- Articles Card --}}
+    <a href="{{ route('dashboard.articles.index') }}" class="block bg-white p-5 rounded-lg border border-gray-200 hover:shadow-md transition">
+        <h3 class="text-sm font-medium text-gray-600">Articles</h3>
+        <p class="text-2xl font-bold mt-2 text-gray-900">{{ $articleCount }}</p>
+    </a>
 </div>
 @endsection
