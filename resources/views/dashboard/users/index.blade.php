@@ -34,7 +34,6 @@
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email Status</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Account Status</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created At</th>
                     <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
@@ -53,18 +52,12 @@
                             @endif
                         </td>                        
                         <td class="px-4 py-2 text-sm text-gray-900">{{ $user->phone ?? 'N/A'}}</td>
-                        <td class="px-4 py-2 text-sm">
-                            @if($user->suspended_at)
-                                <span class="px-2 py-1 text-xs bg-red-100 text-red-700 rounded">Suspended</span>
-                            @else
-                                <span class="px-2 py-1 text-xs bg-green-100 text-green-700 rounded">Active</span>
-                            @endif
-                        </td>
                         <td class="px-4 py-2 text-sm text-gray-500">{{ $user->created_at->format('M d, Y') }}</td>
                         <td class="px-4 py-2 text-center flex justify-center gap-2">
                             <a href="{{ route('dashboard.users.show', $user->id) }}" 
                                class="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200">View</a>
                         
+                            @if(auth()->id() !== $user->id) 
                             <form action="{{ route('dashboard.users.suspend', $user->id) }}" method="POST" class="inline-block">
                                 @csrf
                                 @method('PATCH')
@@ -74,6 +67,7 @@
                                         {{ $user->suspended_at ? 'Unsuspend' : 'Suspend' }}
                                 </button>
                             </form>
+                            @endif
                         </td>                        
                     </tr>
                 @empty
