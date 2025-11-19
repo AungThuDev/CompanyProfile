@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories\Backend;
+namespace App\Repositories;
 
-use App\Contracts\Backend\ArticleRepositoryInterface;
+use App\Contracts\ArticleRepositoryInterface;
 use App\Models\Article;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;

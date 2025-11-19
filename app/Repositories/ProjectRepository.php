@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories\Backend;
+namespace App\Repositories;
 
-use App\Contracts\Backend\ProjectRepositoryInterface;
+use App\Contracts\ProjectRepositoryInterface;
 use App\Models\Project;
 use Exception;
 use Illuminate\Http\UploadedFile;

@@ -1,8 +1,8 @@
 <?php 
 
-namespace App\Repositories\Backend;
+namespace App\Repositories;
 
-use App\Contracts\Backend\CategoryRepositoryInterface;
+use App\Contracts\CategoryRepositoryInterface;
 use App\Models\Category;
 use Exception;
 use Illuminate\Support\Facades\Auth;

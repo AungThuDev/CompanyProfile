@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Contracts\Backend\ProjectRepositoryInterface;
-use App\Contracts\Backend\ProjectTypeRepositoryInterface;
-use App\Contracts\Backend\ServiceRepositoryInterface;
-use App\Contracts\Backend\UserRepositoryInterface;
-use App\Contracts\Backend\CategoryRepositoryInterface;
-use App\Contracts\Backend\TagRepositoryInterface;
-use App\Contracts\Backend\ArticleRepositoryInterface;
+use App\Contracts\ProjectRepositoryInterface;
+use App\Contracts\ProjectTypeRepositoryInterface;
+use App\Contracts\ServiceRepositoryInterface;
+use App\Contracts\UserRepositoryInterface;
+use App\Contracts\CategoryRepositoryInterface;
+use App\Contracts\TagRepositoryInterface;
+use App\Contracts\ArticleRepositoryInterface;
 use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Contracts\Backend\ProjectTypeRepositoryInterface;
+use App\Contracts\ProjectTypeRepositoryInterface;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 

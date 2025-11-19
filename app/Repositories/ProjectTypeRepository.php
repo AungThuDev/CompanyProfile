@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories\Backend;
+namespace App\Repositories;
 
-use App\Contracts\Backend\ProjectTypeRepositoryInterface;
+use App\Contracts\ProjectTypeRepositoryInterface;
 use App\Models\ProjectType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

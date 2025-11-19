@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories\Backend;
+namespace App\Repositories;
 
-use App\Contracts\Backend\UserRepositoryInterface;
+use App\Contracts\UserRepositoryInterface;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;

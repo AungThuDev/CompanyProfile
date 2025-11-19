@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Contracts\Backend;
+namespace App\Contracts;
 
 interface CategoryRepositoryInterface
 {

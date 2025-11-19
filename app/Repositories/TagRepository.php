@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories\Backend;
+namespace App\Repositories;
 
-use App\Contracts\Backend\TagRepositoryInterface;
+use App\Contracts\TagRepositoryInterface;
 use App\Models\Tag;
 use Exception;
 use Illuminate\Support\Facades\Auth;

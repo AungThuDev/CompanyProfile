@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Contracts\Backend\ArticleRepositoryInterface;
+use App\Contracts\ArticleRepositoryInterface;
 use App\Models\Tag;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
@@ -24,14 +24,9 @@ class ArticleController extends Controller
     }
 
     public function show(int $id)
-    {
-        try {
-            $article = $this->articleRepository->find($id);
-            return view('dashboard.articles.show', compact('article'));
-        } catch (\Exception $e) {
-            return redirect()->route('dashboard.articles.index')
-                             ->withErrors(['error' => 'Article not found.']);
-        }
+    {   
+        $article = $this->articleRepository->find($id);
+        return view('dashboard.articles.show', compact('article'));
     }
 
     public function create()

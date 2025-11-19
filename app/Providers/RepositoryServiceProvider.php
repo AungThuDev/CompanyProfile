@@ -2,20 +2,20 @@
 
 namespace App\Providers;
 
-use App\Contracts\Backend\ArticleRepositoryInterface;
-use App\Contracts\Backend\CategoryRepositoryInterface;
-use App\Contracts\Backend\ProjectRepositoryInterface;
-use App\Contracts\Backend\ProjectTypeRepositoryInterface;
-use App\Contracts\Backend\ServiceRepositoryInterface;
-use App\Contracts\Backend\TagRepositoryInterface;
-use App\Contracts\Backend\UserRepositoryInterface;
-use App\Repositories\Backend\ArticleRepository;
-use App\Repositories\Backend\CategoryRepository;
-use App\Repositories\Backend\ProjectRepository;
-use App\Repositories\Backend\ProjectTypeRepository;
-use App\Repositories\Backend\ServiceRepository;
-use App\Repositories\Backend\TagRepository;
-use App\Repositories\Backend\UserRepository;
+use App\Contracts\ArticleRepositoryInterface;
+use App\Contracts\CategoryRepositoryInterface;
+use App\Contracts\ProjectRepositoryInterface;
+use App\Contracts\ProjectTypeRepositoryInterface;
+use App\Contracts\ServiceRepositoryInterface;
+use App\Contracts\TagRepositoryInterface;
+use App\Contracts\UserRepositoryInterface;
+use App\Repositories\ArticleRepository;
+use App\Repositories\CategoryRepository;
+use App\Repositories\ProjectRepository;
+use App\Repositories\ProjectTypeRepository;
+use App\Repositories\ServiceRepository;
+use App\Repositories\TagRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider

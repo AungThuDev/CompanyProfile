@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Contracts\Backend\ServiceRepositoryInterface;
-use App\Contracts\Backend\ProjectRepositoryInterface;
+use App\Contracts\ServiceRepositoryInterface;
+use App\Contracts\ProjectRepositoryInterface;
 
 class FrontendController extends Controller
 {

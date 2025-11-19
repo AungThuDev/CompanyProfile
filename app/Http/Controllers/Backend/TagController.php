@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Contracts\Backend\TagRepositoryInterface;
+use App\Contracts\TagRepositoryInterface;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
