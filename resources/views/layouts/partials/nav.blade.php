@@ -42,6 +42,9 @@
                     <a href="{{ route('dashboard.profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
                         Profile
                     </a>
+                    <a href="{{ route('dashboard.settings') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                        Settings
+                    </a>
                     <button
                         type="button"
                         command="show-modal"

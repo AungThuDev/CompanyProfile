@@ -33,7 +33,7 @@ Route::get('/', [FrontendController::class, 'index'])->name('frontend.index');
 Route::middleware('auth')->group(function () {
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('index');
-
+      
         Route::prefix('users')
         ->name('users.')
         ->controller(UserController::class)
@@ -46,6 +46,9 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::match(['get', 'patch'], 'profile', [UserController::class, 'profile'])->name('profile');
+
+        Route::get('/settings', [UserController::class, 'settings'])->name('settings');
+        Route::post('/settings/password', [UserController::class, 'changePassword'])->name('settings.password');
 
         Route::resource('services', ServiceController::class);
         Route::resource('project-types', ProjectTypeController::class);

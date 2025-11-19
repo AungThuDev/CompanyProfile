@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Contracts\UserRepositoryInterface;
 use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
@@ -93,6 +95,37 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return back()->withErrors([
                 'error' => 'An error occurred while updating your profile. Please try again.',
+            ])->withInput();
+        }
+    }
+
+    public function settings()
+    { 
+        return view('dashboard.users.settings');
+    }
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|string|min:8|confirmed', 
+        ]);
+
+        DB::beginTransaction();
+
+        try { 
+            $user = Auth::user();
+    
+            if (!Hash::check($request->current_password, $user->password)) {
+                return back()->withErrors(['current_password' => 'Current password is incorrect.']);
+            }
+    
+            $user->password = Hash::make($request->password);
+            $user->save();
+    
+            return back()->with('success', 'Password changed successfully.');
+        }catch(Exception $e) { 
+            return back()->withErrors([
+                'error' => 'An error occurred while changing your password. Please try again.',
             ])->withInput();
         }
     }
