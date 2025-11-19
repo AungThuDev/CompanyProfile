@@ -89,6 +89,12 @@ class CompanyInfoRepository implements CompanyInfoRepositoryInterface
                 Storage::disk('public')->delete($companyInfo->logo);
             }
 
+            foreach ($companyInfo->socialAccounts as $account) {
+                if ($account->logo && Storage::disk('public')->exists($account->logo)) {
+                    Storage::disk('public')->delete($account->logo);
+                }
+            }
+
             $companyInfo->delete();
 
             DB::commit();

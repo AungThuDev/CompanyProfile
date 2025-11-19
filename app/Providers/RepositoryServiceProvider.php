@@ -8,6 +8,7 @@ use App\Contracts\CompanyInfoRepositoryInterface;
 use App\Contracts\ProjectRepositoryInterface;
 use App\Contracts\ProjectTypeRepositoryInterface;
 use App\Contracts\ServiceRepositoryInterface;
+use App\Contracts\SocialAccountRepositoryInterface;
 use App\Contracts\TagRepositoryInterface;
 use App\Contracts\UserRepositoryInterface;
 use App\Repositories\ArticleRepository;
@@ -16,6 +17,7 @@ use App\Repositories\CompanyInfoRepository;
 use App\Repositories\ProjectRepository;
 use App\Repositories\ProjectTypeRepository;
 use App\Repositories\ServiceRepository;
+use App\Repositories\SocialAccountRepository;
 use App\Repositories\TagRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Support\ServiceProvider;
@@ -36,6 +38,7 @@ class RepositoryServiceProvider extends ServiceProvider
             TagRepositoryInterface::class => TagRepository::class,
             ArticleRepositoryInterface::class => ArticleRepository::class,
             CompanyInfoRepositoryInterface::class => CompanyInfoRepository::class,
+            SocialAccountRepositoryInterface::class => SocialAccountRepository::class,
         ];
 
         foreach($repositories as $interface => $implementation) {

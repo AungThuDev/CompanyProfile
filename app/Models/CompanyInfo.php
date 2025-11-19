@@ -21,6 +21,11 @@ class CompanyInfo extends Model
         'updated_by',
     ];
 
+    public function socialAccounts()
+    {
+        return $this->hasMany(SocialAccount::class)->orderBy('display_order', 'asc');
+    }
+
     public function creator(): BelongsTo
 	{
 		return $this->belongsTo(User::class, 'created_by');

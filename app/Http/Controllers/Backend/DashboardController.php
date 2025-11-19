@@ -9,6 +9,8 @@ use App\Contracts\UserRepositoryInterface;
 use App\Contracts\CategoryRepositoryInterface;
 use App\Contracts\TagRepositoryInterface;
 use App\Contracts\ArticleRepositoryInterface;
+use App\Contracts\CompanyInfoRepositoryInterface;
+use App\Contracts\SocialAccountRepositoryInterface;
 use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
@@ -20,6 +22,8 @@ class DashboardController extends Controller
     protected CategoryRepositoryInterface $categoryRepository;
     protected TagRepositoryInterface $tagRepository;
     protected ArticleRepositoryInterface $articleRepository;
+    protected CompanyInfoRepositoryInterface $companyInfoRepository;
+    protected SocialAccountRepositoryInterface $socialAccountRepository;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
@@ -28,7 +32,9 @@ class DashboardController extends Controller
         ServiceRepositoryInterface $serviceRepository,
         CategoryRepositoryInterface $categoryRepository,
         TagRepositoryInterface $tagRepository,
-        ArticleRepositoryInterface $articleRepository
+        ArticleRepositoryInterface $articleRepository,
+        CompanyInfoRepositoryInterface $companyInfoRepository,
+        SocialAccountRepositoryInterface $socialAccountRepository
     )
     {
         $this->userRepository = $userRepository;
@@ -38,6 +44,8 @@ class DashboardController extends Controller
         $this->categoryRepository = $categoryRepository;
         $this->tagRepository = $tagRepository;
         $this->articleRepository = $articleRepository;
+        $this->companyInfoRepository = $companyInfoRepository;
+        $this->socialAccountRepository = $socialAccountRepository;
     }
 
     public function index()
@@ -49,6 +57,8 @@ class DashboardController extends Controller
         $categoryCount = count($this->categoryRepository->all());
         $tagCount = count($this->tagRepository->all());
         $articleCount = count($this->articleRepository->all());
+        $companyInfoCount = count($this->companyInfoRepository->all());
+        $socialAccountCount = count($this->socialAccountRepository->all());
 
         return view(
             'dashboard.index', 
@@ -59,7 +69,9 @@ class DashboardController extends Controller
                 'serviceCount', 
                 'categoryCount', 
                 'tagCount', 
-                'articleCount'
+                'articleCount',
+                'companyInfoCount',
+                'socialAccountCount'
             )
         );
     }

@@ -45,5 +45,17 @@
         <h3 class="text-sm font-medium text-gray-600">Articles</h3>
         <p class="text-2xl font-bold mt-2 text-gray-900">{{ $articleCount }}</p>
     </a>
+
+    {{-- Social Accounts Card --}}
+    <a href="{{ route('dashboard.social-accounts.index') }}" class="block bg-white p-5 rounded-lg border border-gray-200 hover:shadow-md transition">
+        <h3 class="text-sm font-medium text-gray-600">Social Accounts</h3>
+        <p class="text-2xl font-bold mt-2 text-gray-900">{{ $socialAccountCount }}</p>
+    </a>
+
+    {{-- Company Infos Card --}}
+    <a href="{{ route('dashboard.company-infos.index') }}" class="block bg-white p-5 rounded-lg border border-gray-200 hover:shadow-md transition">
+        <h3 class="text-sm font-medium text-gray-600">Company Infos</h3>
+        <p class="text-2xl font-bold mt-2 text-gray-900">{{ $companyInfoCount }}</p>
+    </a>
 </div>
 @endsection
