@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\ArticleController;
 use App\Http\Controllers\Backend\AuthController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\DashboardController;
@@ -49,6 +50,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('projects', ProjectController::class);
         Route::resource('categories',CategoryController::class);
         Route::resource('tags', TagController::class);
+        Route::resource('articles', ArticleController::class);
     });
 
     // Logout
