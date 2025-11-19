@@ -26,14 +26,14 @@ use App\Http\Controllers\Frontend\FrontendController;
 |
 */
 
-Route::get('/', [FrontendController::class, 'index'])->name('frontend.index');
+Route::get('/{any}', [FrontendController::class, 'index'])->where('any', '.*');
 
 
 // Dashboard (Protected Routes)
 Route::middleware('auth')->group(function () {
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('index');
-      
+
         Route::prefix('users')
         ->name('users.')
         ->controller(UserController::class)
