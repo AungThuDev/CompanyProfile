@@ -26,7 +26,7 @@ use App\Http\Controllers\Frontend\FrontendController;
 |
 */
 
-Route::get('/{any}', [FrontendController::class, 'index'])->where('any', '.*');
+Route::get('/', [FrontendController::class, 'index'])->where('any', '.*');
 
 
 // Dashboard (Protected Routes)
