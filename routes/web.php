@@ -1,68 +1,66 @@
 <?php
 
-use App\Http\Controllers\Backend\ArticleController;
-use App\Http\Controllers\Backend\AuthController;
-use App\Http\Controllers\Backend\CategoryController;
-use App\Http\Controllers\Backend\CompanyInfoController;
-use App\Http\Controllers\Backend\DashboardController;
-use App\Http\Controllers\Backend\ProjectController;
-use App\Http\Controllers\Backend\ProjectTypeController;
-use App\Http\Controllers\Backend\ServiceController;
-use App\Http\Controllers\Backend\SocialAccountController;
-use App\Http\Controllers\Backend\TagController;
-use App\Http\Controllers\Backend\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Backend\{
+    ArticleController,
+    AuthController,
+    CategoryController,
+    CompanyInfoController,
+    DashboardController,
+    ProjectController,
+    ProjectTypeController,
+    ServiceController,
+    SocialAccountController,
+    TagController,
+    UserController
+};
 use App\Http\Controllers\Frontend\FrontendController;
-
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| Backend Routes (Dashboard & Auth)
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+| Routes for admin panel, protected by auth middleware
 |
 */
 
-Route::get('/', [FrontendController::class, 'index'])->where('any', '.*');
-
-
 // Dashboard (Protected Routes)
-Route::middleware('auth')->group(function () {
-    Route::prefix('dashboard')->name('dashboard.')->group(function () {
-        Route::get('/', [DashboardController::class, 'index'])->name('index');
+Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(function () {
 
-        Route::prefix('users')
-        ->name('users.')
-        ->controller(UserController::class)
-        ->group(function () {
-            Route::get('', 'index')->name('index');
-            Route::get('create', 'create')->name('create');
-            Route::post('', 'store')->name('store');
-            Route::get('/{user}', 'show')->name('show');
-            Route::patch('/{user}/suspend', 'suspend')->name('suspend');
-        });
+    Route::get('/', [DashboardController::class, 'index'])->name('index');
 
-        Route::match(['get', 'patch'], 'profile', [UserController::class, 'profile'])->name('profile');
-
-        Route::get('/settings', [UserController::class, 'settings'])->name('settings');
-        Route::post('/settings/password', [UserController::class, 'changePassword'])->name('settings.password');
-
-        Route::resource('services', ServiceController::class);
-        Route::resource('project-types', ProjectTypeController::class);
-        Route::resource('projects', ProjectController::class);
-        Route::resource('categories',CategoryController::class);
-        Route::resource('tags', TagController::class);
-        Route::resource('articles', ArticleController::class);
-        Route::resource('company-infos', CompanyInfoController::class);
-        Route::resource('social-accounts', SocialAccountController::class);
+    // User management
+    Route::prefix('users')->name('users.')->controller(UserController::class)->group(function () {
+        Route::get('', 'index')->name('index');
+        Route::get('create', 'create')->name('create');
+        Route::post('', 'store')->name('store');
+        Route::get('/{user}', 'show')->name('show');
+        Route::patch('/{user}/suspend', 'suspend')->name('suspend');
     });
 
-    // Logout
-     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    // Profile
+    Route::match(['get', 'patch'], 'profile', [UserController::class, 'profile'])->name('profile');
+
+    // Settings
+    Route::get('/settings', [UserController::class, 'settings'])->name('settings');
+    Route::post('/settings/password', [UserController::class, 'changePassword'])->name('settings.password');
+
+    // Resources
+    Route::resources([
+        'services'        => ServiceController::class,
+        'project-types'   => ProjectTypeController::class,
+        'projects'        => ProjectController::class,
+        'categories'      => CategoryController::class,
+        'tags'            => TagController::class,
+        'articles'        => ArticleController::class,
+        'company-infos'   => CompanyInfoController::class,
+        'social-accounts' => SocialAccountController::class,
+    ]);
 });
+
+// Logout
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 // Auth Routes (Guest Only)
 Route::prefix('auth')->name('auth.')->controller(AuthController::class)->group(function () {
@@ -73,3 +71,15 @@ Route::prefix('auth')->name('auth.')->controller(AuthController::class)->group(f
     Route::post('resend-email', 'resendEmail')->name('resend-email');
 });
 
+
+/*
+|--------------------------------------------------------------------------
+| Frontend SPA Routes
+|--------------------------------------------------------------------------
+|
+| All frontend routes handled by Vue SPA.
+| Page refreshes will not cause 404 because backend routes are excluded.
+|
+*/
+Route::get('/{any}', [FrontendController::class, 'index'])
+     ->where('any', '^(?!dashboard|auth).*$'); // exclude backend paths
