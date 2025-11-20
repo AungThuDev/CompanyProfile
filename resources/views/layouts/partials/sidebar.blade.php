@@ -116,60 +116,57 @@
                 Articles
             </a>
 
+            <div class="border-t border-gray-200"></div>
+            <div class="p-3">
+                @if($activeCompany)
+                    <a href="{{ route('dashboard.company-infos.index') }}"
+                    class="block bg-indigo-50 rounded-md p-2.5 text-center hover:bg-indigo-100 transition">
+                        <p class="text-sm font-semibold text-indigo-800">{{ $activeCompany->name }}</p>
+                        <p class="text-xs text-indigo-600">Address: {{ $activeCompany->address ?? 'N/A' }}</p>
+                        <p class="text-xs text-indigo-600">Email: {{ $activeCompany->email ?? 'N/A' }}</p>
+                        <p class="text-xs text-indigo-600">Phone: {{ $activeCompany->phone ?? 'N/A' }}</p>
+                    </a>
+                @else
+                    <a href="{{ route('dashboard.company-infos.index') }}">
+                        <p class="text-xs text-gray-400 text-center">No active company info set.</p>
+                    </a>
+                @endif
+
+                 {{-- Social Accounts --}}
+                @if($activeCompany && $activeCompany->socialAccounts->isNotEmpty())
+                    <a href="{{ route('dashboard.social-accounts.index') }}"
+                    class="block bg-indigo-50 rounded-lg p-3 hover:bg-indigo-100 transition group mt-2">
+
+                        <div class="flex items-center justify-between">
+                            <p class="text-xs font-semibold text-indigo-800">Social Accounts</p>
+                            <span class="text-[10px] text-indigo-500 group-hover:text-indigo-700">Manage →</span>
+                        </div>
+
+                        <div class="flex justify-center space-x-3 mt-3">
+                            @foreach($activeCompany->socialAccounts as $account)
+                                <a href="{{ $account->account_link }}" target="_blank"
+                                onclick="event.stopPropagation();"
+                                class="p-1.5 bg-white border border-indigo-200 rounded-md shadow-sm
+                                        hover:bg-indigo-50 hover:border-indigo-400 transition">
+                                    <img src="{{ asset('storage/' . $account->logo) }}" 
+                                        alt="{{ $account->name }}" 
+                                        class="w-5 h-5">
+                                </a>
+                            @endforeach
+                        </div>
+
+                        <p class="text-[11px] text-center text-indigo-600 mt-2 opacity-80 group-hover:opacity-100">
+                            Click to manage all social accounts
+                        </p>
+
+                    </a>
+                @else
+                    <a href="{{ route('dashboard.social-accounts.index') }}" class="block mt-2">
+                        <p class="text-xs text-gray-400 text-center">No active social accounts.</p>
+                    </a>
+                @endif
+            </div>
         </nav>
-
-        {{-- Footer --}}
-        <div class="p-3 border-t border-gray-200">
-            {{-- Active Company --}}
-            @if($activeCompany)
-                <a href="{{ route('dashboard.company-infos.index') }}"
-                   class="block bg-indigo-50 rounded-md p-2.5 text-center hover:bg-indigo-100 transition">
-                    <p class="text-sm font-semibold text-indigo-800">{{ $activeCompany->name }}</p>
-                    <p class="text-xs text-indigo-600">Address: {{ $activeCompany->address ?? 'N/A' }}</p>
-                    <p class="text-xs text-indigo-600">Email: {{ $activeCompany->email ?? 'N/A' }}</p>
-                    <p class="text-xs text-indigo-600">Phone: {{ $activeCompany->phone ?? 'N/A' }}</p>
-                </a>
-            @else
-                <a href="{{ route('dashboard.company-infos.index') }}">
-                    <p class="text-xs text-gray-400 text-center">No active company info set.</p>
-                </a>
-            @endif
-
-            {{-- Social Accounts --}}
-            @if($activeCompany && $activeCompany->socialAccounts->isNotEmpty())
-                <a href="{{ route('dashboard.social-accounts.index') }}"
-                   class="block bg-indigo-50 rounded-lg p-3 hover:bg-indigo-100 transition group mt-2">
-
-                    <div class="flex items-center justify-between">
-                        <p class="text-xs font-semibold text-indigo-800">Social Accounts</p>
-                        <span class="text-[10px] text-indigo-500 group-hover:text-indigo-700">Manage →</span>
-                    </div>
-
-                    <div class="flex justify-center space-x-3 mt-3">
-                        @foreach($activeCompany->socialAccounts as $account)
-                            <a href="{{ $account->account_link }}" target="_blank"
-                               onclick="event.stopPropagation();"
-                               class="p-1.5 bg-white border border-indigo-200 rounded-md shadow-sm
-                                      hover:bg-indigo-50 hover:border-indigo-400 transition">
-                                <img src="{{ asset('storage/' . $account->logo) }}" 
-                                     alt="{{ $account->name }}" 
-                                     class="w-5 h-5">
-                            </a>
-                        @endforeach
-                    </div>
-
-                    <p class="text-[11px] text-center text-indigo-600 mt-2 opacity-80 group-hover:opacity-100">
-                        Click to manage all social accounts
-                    </p>
-
-                </a>
-            @else
-                <a href="{{ route('dashboard.social-accounts.index') }}" class="block mt-2">
-                    <p class="text-xs text-gray-400 text-center">No active social accounts.</p>
-                </a>
-            @endif
-        </div>
-
     </div>
 
 </aside>
