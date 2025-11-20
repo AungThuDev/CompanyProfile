@@ -84,6 +84,17 @@
                             focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
             </div>
 
+            {{-- Featured Checkbox --}}
+            <div>
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" name="is_featured" value="1"
+                           class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                           {{ old('is_featured', $article->is_featured) ? 'checked' : '' }}>
+                    <span class="text-sm text-gray-700">Set as Featured Article</span>
+                </label>
+                <p class="text-xs text-gray-500 mt-1">Only one article will be featured at a time.</p>
+            </div>
+
             {{-- Current Image --}}
             <div>
                 <label class="block text-xs font-medium text-gray-700 mb-1.5">Current Image</label>

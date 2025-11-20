@@ -33,6 +33,7 @@
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Featured</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reading Time</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Display Order</th>
                     <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
@@ -55,6 +56,18 @@
                         <td class="px-4 py-2 text-sm text-gray-900">{{ $article->title }}</td>
 
                         <td class="px-4 py-2 text-sm text-gray-700">{{ $article->category?->name ?? '-' }}</td>
+
+                        <td class="px-4 py-2 text-sm">
+                            @if($article->is_featured)
+                                <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded-full">
+                                    Featured
+                                </span>
+                            @else
+                                <span class="inline-block bg-gray-100 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">
+                                    Normal
+                                </span>
+                            @endif
+                        </td>                        
 
                         <td class="px-4 py-2 text-sm text-gray-700">{{ $article->reading_time }}</td>
 

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('image'); 
             $table->unsignedInteger('reading_time')->default(0);
             $table->unsignedInteger('display_order')->default(1);
+            $table->boolean('is_featured')->default(false);
             $table->foreignId('created_by')
             ->nullable()
             ->constrained('users')

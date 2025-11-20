@@ -40,6 +40,17 @@
                 <p class="mt-1 text-gray-900">{{ $article->reading_time }}</p>
             </div>
 
+            <div>
+                <label class="block text-xs font-medium text-gray-700">Featured</label>
+                <p class="mt-1 text-gray-900">
+                    @if($article->is_featured)
+                        <span class="inline-block bg-green-100 text-green-800 px-2 py-0.5 rounded text-xs">Yes</span>
+                    @else
+                        <span class="inline-block bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs">No</span>
+                    @endif
+                </p>
+            </div>
+
             <div class="col-span-2">
                 <label class="block text-xs font-medium text-gray-700">Content</label>
                 <p class="mt-1 text-gray-900 whitespace-pre-wrap">{{ $article->content }}</p>

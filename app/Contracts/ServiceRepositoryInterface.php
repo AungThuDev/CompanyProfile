@@ -10,6 +10,8 @@ interface ServiceRepositoryInterface
 
     public function paginate(int $perPage = 10);
 
+    public function getTopServices(int $limit = 6);
+
     public function find(int $id);
 
     public function create(array $data, UploadedFile $file);

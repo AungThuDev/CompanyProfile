@@ -18,6 +18,7 @@ class Article extends Model
         'image',
         'reading_time',
         'display_order',
+        'is_featured',
         'created_by',
         'updated_by',
     ];

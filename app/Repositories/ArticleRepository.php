@@ -31,6 +31,16 @@ class ArticleRepository implements ArticleRepositoryInterface
         return $this->model->with('tags')->paginate($perPage);
     }
 
+    public function getFeaturedArticle()
+    {
+        return $this->model->where('is_featured', true)->first();
+    }
+
+    public function getTopArticles(int $limit = 6)
+    {
+        return $this->model->orderBy('display_order', 'asc')->limit($limit)->get();
+    }
+
     public function find($id)
     {
         return $this->model->with('tags')->findOrFail($id);
@@ -39,36 +49,41 @@ class ArticleRepository implements ArticleRepositoryInterface
     public function create(array $data, array $tagIds = [], ?UploadedFile $file = null)
     {
         DB::beginTransaction();
-
+    
         try {
             if (!isset($data['slug'])) {
                 $data['slug'] = Str::slug($data['title']);
             }
-
+    
             if ($file instanceof UploadedFile) {
                 $data['image'] = $this->storeImage($file);
             }
-
+    
             $data['created_by'] = Auth::id();
-
             $data['reading_time'] = $this->calculateReadingTime($data['content']);
-
+    
+            if (!empty($data['is_featured']) && $data['is_featured']) {
+                $this->model->where('is_featured', true)->update(['is_featured' => false]);
+            } else {
+                $data['is_featured'] = false;
+            }
+    
             $article = $this->model->create($data);
-
+    
             if (!empty($tagIds)) {
                 $article->tags()->attach($tagIds);
             }
-
+    
             DB::commit();
             return $article;
-
+    
         } catch (Exception $e) {
             DB::rollBack();
             Log::error("Article creation failed: {$e->getMessage()}");
             throw $e;
         }
     }
-
+    
     public function update($id, array $data, array $tagIds = [], ?UploadedFile $file = null)
     {
         DB::beginTransaction();
@@ -89,7 +104,15 @@ class ArticleRepository implements ArticleRepositoryInterface
                 $data['image'] = $this->storeImage($file);
             }
 
-            $article['updated_by'] = Auth::id();
+            $data['updated_by'] = Auth::id();
+
+            if (!empty($data['is_featured']) && $data['is_featured']) {
+                $this->model->where('is_featured', true)
+                            ->where('id', '!=', $id)
+                            ->update(['is_featured' => false]);
+            } else {
+                $data['is_featured'] = false;
+            }
 
             $article->update($data);
 
@@ -108,6 +131,7 @@ class ArticleRepository implements ArticleRepositoryInterface
             throw $e;
         }
     }
+
 
     public function destroy($id)
     {

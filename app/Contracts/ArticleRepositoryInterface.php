@@ -10,6 +10,10 @@ interface ArticleRepositoryInterface
 
     public function paginate(int $perPage = 10);
 
+    public function getFeaturedArticle();
+
+    public function getTopArticles(int $limit = 6);
+
     public function find(int $id);
 
     public function create(array $data, array $tagIds = [], ?UploadedFile $file = null);

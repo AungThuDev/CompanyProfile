@@ -32,6 +32,14 @@ class ProjectRepository implements ProjectRepositoryInterface
         return $this->model->paginate($perPage);
     }
 
+    public function getTopProjects(int $limit = 6)
+    {
+        return $this->model
+            ->orderBy('display_order', 'asc')
+            ->limit($limit)
+            ->get();
+    }
+
     public function find(int $id)
     {
         return $this->model->findOrFail($id);
