@@ -63,7 +63,7 @@ class UserController extends Controller
 
             return redirect()->route('dashboard.users.index')
                             ->with('success', 'User suspension status updated successfully!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('dashboard.users.index')
                             ->withErrors(['error' => 'Failed to update user suspension.']);
         }
@@ -92,7 +92,7 @@ class UserController extends Controller
 
             return redirect()->route('dashboard.profile')
                 ->with('success', 'Profile updated successfully!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withErrors([
                 'error' => 'An error occurred while updating your profile. Please try again.',
             ])->withInput();
