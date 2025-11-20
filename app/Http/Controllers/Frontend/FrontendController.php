@@ -56,26 +56,79 @@ class FrontendController extends Controller
                 'name' => $category->name,
             ];
         });
-        $articles = $this->articleRepository->all()
-            ->map(function ($article) {
+        $blogPosts = $this->articleRepository->getTopArticles()
+            ->map(function ($blogPost) {
                 return [
-                    'id' => $article->id,
-                    'category' => $article->category->name,
-                    'title' => $article->title,
-                    'content' => $article->content,
-                    'image' => $article->image,
-                    'display_order' => $article->display_order,
-                    'featured' => false,
-                    'created_at' => $article->created_at->toDateString(),
+                    'id' => $blogPost->id,
+                    'category' => $blogPost->category->name,
+                    'title' => $blogPost->title,
+                    'content' => $blogPost->content,
+                    'image' => $blogPost->image,
+                    'display_order' => $blogPost->display_order,
+                    'featured' => $blogPost->is_featured,
+                    'created_at' => $blogPost->created_at->toDateString(),
+                    'tags' => $blogPost->tags->map(function ($tag) {
+                        return [
+                            'id' => $tag->id,
+                            'name' => $tag->name,
+                        ];
+                    }),
                 ];
-            })
-            ->sortBy('display_order')
-            ->values();
+            });
+        $allArticles = $this->articleRepository->all()
+            ->map(function ($allArticle) {
+                return [
+                    'id' => $allArticle->id,
+                    'category' => $allArticle->category->name,
+                    'title' => $allArticle->title,
+                    'content' => $allArticle->content,
+                    'image' => $allArticle->image,
+                    'display_order' => $allArticle->display_order,
+                    'featured' => $allArticle->is_featured,
+                    'created_at' => $allArticle->created_at->toDateString(),
+                    'tags' => $allArticle->tags->map(function ($tag) {
+                        return [
+                            'id' => $tag->id,
+                            'name' => $tag->name,
+                        ];
+                    }),
+                ];
+            });
+        $featuredPost = $this->articleRepository->getFeaturedArticle();
+
+        $featuredPost = $this->articleRepository->getFeaturedArticle();
+
+        if ($featuredPost) {
+            $featuredPostArray = [
+                'id' => $featuredPost->id,
+                'category' => $featuredPost->category->name,
+                'title' => $featuredPost->title,
+                'content' => $featuredPost->content,
+                'image' => $featuredPost->image,
+                'display_order' => $featuredPost->display_order,
+                'featured' => $featuredPost->is_featured,
+                'created_at' => $featuredPost->created_at->toDateString(),
+                'tags' => $featuredPost->tags->map(function ($tag) {
+                    return [
+                        'id' => $tag->id,
+                        'name' => $tag->name,
+                    ];
+                })->toArray(),
+            ];
+        } else {
+            $featuredPostArray = null;
+        }
+
+
+
+
         $initialState = [
             'services' => $services,
             'projects' => $projects,
-            'articles' => $articles,
+            'blogPosts' => $blogPosts,
             'categories' => $categories,
+            'featuredPosts' => $featuredPostArray,
+            'allArticles' => $allArticles,
         ];
         return view('frontend.app', compact('initialState'));
     }

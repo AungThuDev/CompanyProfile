@@ -38,7 +38,7 @@ class ArticleRepository implements ArticleRepositoryInterface
 
     public function getTopArticles(int $limit = 6)
     {
-        return $this->model->orderBy('display_order', 'asc')->limit($limit)->get();
+        return $this->model->where('is_featured', false)->orderBy('display_order', 'asc')->limit($limit)->get();
     }
 
     public function find($id)
@@ -49,41 +49,41 @@ class ArticleRepository implements ArticleRepositoryInterface
     public function create(array $data, array $tagIds = [], ?UploadedFile $file = null)
     {
         DB::beginTransaction();
-    
+
         try {
             if (!isset($data['slug'])) {
                 $data['slug'] = Str::slug($data['title']);
             }
-    
+
             if ($file instanceof UploadedFile) {
                 $data['image'] = $this->storeImage($file);
             }
-    
+
             $data['created_by'] = Auth::id();
             $data['reading_time'] = $this->calculateReadingTime($data['content']);
-    
+
             if (!empty($data['is_featured']) && $data['is_featured']) {
                 $this->model->where('is_featured', true)->update(['is_featured' => false]);
             } else {
                 $data['is_featured'] = false;
             }
-    
+
             $article = $this->model->create($data);
-    
+
             if (!empty($tagIds)) {
                 $article->tags()->attach($tagIds);
             }
-    
+
             DB::commit();
             return $article;
-    
+
         } catch (Exception $e) {
             DB::rollBack();
             Log::error("Article creation failed: {$e->getMessage()}");
             throw $e;
         }
     }
-    
+
     public function update($id, array $data, array $tagIds = [], ?UploadedFile $file = null)
     {
         DB::beginTransaction();

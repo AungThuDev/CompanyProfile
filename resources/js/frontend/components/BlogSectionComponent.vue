@@ -43,25 +43,31 @@
                         <p class="text-gray-400 mb-6 line-clamp-5">{{ featuredPost.content }}</p>
 
                         <div class="flex items-center gap-6 text-sm text-gray-500 mb-6">
-                            <!-- <div class="flex items-center gap-2">
-                <User size="16" />
-                <span>{{ featuredPost.author }}</span>
-              </div> -->
+
                             <div class="flex items-center gap-2">
                                 <Calendar size="16" />
                                 <span>{{ featuredPost.created_at }}</span>
                             </div>
-                            <!-- <div class="flex items-center gap-2">
-                <Clock size="16" />
-                <span>{{ featuredPost.readTime }}</span>
-              </div> -->
+                            <div class="flex flex-wrap gap-2">
+                                <span
+                                    v-for="(tag, index) in featuredPost.tags.slice(0, 3)"
+                                    :key="index"
+                                    class="flex items-center gap-1 px-2 py-1 text-xs rounded bg-blue-500/20 text-blue-300"
+                                >
+                                    <Tags size="14" class="text-blue-300" />
+
+                                    {{ tag.name }}
+                                </span>
+                            </div>
                         </div>
 
-                        <a href="#"
-                            class="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors duration-300 group">
-                            <span>Read Article</span>
-                            <ArrowRight size="20" class="group-hover:translate-x-1 transition-transform duration-300" />
-                        </a>
+                        <router-link :to="{ name: 'article.show', params: { id: featuredPost.id } }">
+                            <button class="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors duration-300 group">
+                                <span>Read Article</span>
+                                <ArrowRight size="20"
+                                    class="group-hover:translate-x-1 transition-transform duration-300" />
+                            </button>
+                        </router-link>
                     </div>
                 </div>
             </div>
@@ -83,8 +89,7 @@
                     </div>
 
                     <div class="p-6">
-                        <h3 class="text-white mb-3 group-hover:text-blue-400 transition-colors duration-300">{{
-                            post.title }}</h3>
+                        <h3 class="text-white mb-3 group-hover:text-blue-400 transition-colors duration-300">{{post.title }}</h3>
                         <p class="text-gray-400 text-sm mb-4 line-clamp-2">{{ post.content }}</p>
 
                         <div class="flex items-center gap-4 text-xs text-gray-500 mb-4">
@@ -92,22 +97,32 @@
                                 <Calendar size="14" />
                                 <span>{{ post.created_at }}</span>
                             </div>
-                            <!-- <div class="flex items-center gap-1">
-                <Clock size="14" />
-                <span>{{ post.readTime }}</span>
-              </div> -->
+
                         </div>
 
                         <div class="flex items-center justify-between pt-4 border-t border-white/10">
-                            <!-- <div class="flex items-center gap-2 text-sm text-gray-400">
-                <User size="16" />
-                <span>{{ post.author }}</span>
-              </div> -->
-                            <a href="#" class="text-blue-400 hover:text-blue-300 transition-colors duration-300 group">
-                                <ArrowRight size="20"
-                                    class="group-hover:translate-x-1 transition-transform duration-300" />
-                            </a>
+
+                            <div class="flex flex-wrap gap-2">
+                                <span
+                                    v-for="(tag, index) in post.tags.slice(0, 3)"
+                                    :key="index"
+                                    class="flex items-center gap-1 px-2 py-1 text-xs rounded bg-blue-500/20 text-blue-300"
+                                >
+                                    <Tags size="14" class="text-blue-300" />
+
+                                    {{ tag.name }}
+                                </span>
+                            </div>
+
+                            <router-link :to="{ name: 'article.show', params: { id: post.id } }">
+                                <button class="text-blue-400 hover:text-blue-300 transition-colors duration-300 group">
+                                    <ArrowRight size="20"
+                                        class="group-hover:translate-x-1 transition-transform duration-300" />
+                                </button>
+                            </router-link>
+
                         </div>
+
                     </div>
                 </article>
             </div>
@@ -131,27 +146,23 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useMotion } from '@vueuse/motion'
-import { Calendar, Clock, ArrowRight, User } from 'lucide-vue-next'
+import { Calendar, ArrowRight , Tags } from 'lucide-vue-next'
 import ImageWithFallback from './figma/ImageWithFallback.vue'
 
 
-// const blogPosts = [
-//   { title: 'The Future of AI in Software Development', excerpt: 'Explore how artificial intelligence is revolutionizing the way we build and deploy applications, from code generation to intelligent testing.', image: 'https://images.unsplash.com/photo-1697577418970-95d99b5a55cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080', category: 'Artificial Intelligence', author: 'Sarah Chen', date: 'Nov 10, 2025', readTime: '5 min read', featured: true },
-//   { title: 'Modern Web Design Principles for 2025', excerpt: 'Discover the latest trends and best practices in web design that create engaging and accessible user experiences.', image: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080', category: 'Design', author: 'Michael Park', date: 'Nov 8, 2025', readTime: '7 min read', featured: false },
-//   { title: 'Cloud-Native Architecture: A Complete Guide', excerpt: 'Learn how to build scalable, resilient applications using cloud-native technologies and microservices architecture.', image: 'https://images.unsplash.com/photo-1667984390538-3dea7a3fe33d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080', category: 'Cloud Computing', author: 'David Rodriguez', date: 'Nov 5, 2025', readTime: '10 min read', featured: false },
-//   { title: 'Best Practices for Mobile App Development', excerpt: 'Essential strategies and patterns for building high-performance mobile applications that users love.', image: 'https://images.unsplash.com/photo-1633250391894-397930e3f5f2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080', category: 'Mobile Development', author: 'Emma Thompson', date: 'Nov 3, 2025', readTime: '6 min read', featured: false },
-//   { title: 'Mastering Modern JavaScript Frameworks', excerpt: 'Deep dive into React, Vue, and other popular frameworks to choose the right tool for your next project.', image: 'https://images.unsplash.com/photo-1565229284535-2cbbe3049123?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080', category: 'Development', author: 'Alex Kim', date: 'Nov 1, 2025', readTime: '8 min read', featured: false },
-//   { title: 'Cybersecurity in the Age of Remote Work', excerpt: 'Critical security measures and best practices to protect your applications and data in a distributed workforce.', image: 'https://images.unsplash.com/photo-1762330463863-a6a399beb5ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080', category: 'Security', author: 'Jessica Lee', date: 'Oct 28, 2025', readTime: '9 min read', featured: false },
-// ]
+
 const props = defineProps({
     blogPosts: {
         type: Array,
         default: () => []
+    },
+    featuredPosts: {
+        type: Object,
+        default: null
     }
 })
-
-const featuredPost = computed(() => props.blogPosts.find(p => p.featured))
-const regularPosts = computed(() => props.blogPosts.filter(p => !p.featured))
+const featuredPost = computed(() => props.featuredPosts)
+const regularPosts = computed(() => props.blogPosts)
 
 
 const headerRef = ref(null)

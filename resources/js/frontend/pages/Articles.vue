@@ -9,6 +9,6 @@ const props = defineProps({
 </script>
 <template>
     <div>
-        <AllArticleComponent :allArticles="props.initialState.articles" :categories="props.initialState.categories" />
+        <AllArticleComponent :allArticles="props.initialState.allArticles" :categories="props.initialState.categories" />
     </div>
 </template>
