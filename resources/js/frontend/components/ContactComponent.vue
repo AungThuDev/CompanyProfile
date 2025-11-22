@@ -86,33 +86,47 @@
 
             <div>
               <label for="subject" class="block text-sm text-gray-400 mb-2">Subject</label>
-              <input
-                type="text"
-                id="subject"
-                name="subject"
-                v-model="formData.subject"
-                placeholder="Project Inquiry"
-                required
-                class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-blue-500/50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all duration-300"
-              />
+              <div class="relative">
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  v-model="formData.subject"
+                  :maxlength="SUBJECT_MAX"
+                  placeholder="Project Inquiry"
+                  required
+                  class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-blue-500/50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all duration-300"
+                />
+                <div class="pointer-events-none absolute top-2 right-2 text-xs flex items-center gap-2 bg-black/30 backdrop-blur-sm px-2 py-0.5 rounded">
+                  <span class="text-gray-400">{{ (formData.subject || '').length }}/{{ SUBJECT_MAX }}</span>
+                </div>
+              </div>
             </div>
 
             <div>
               <label for="message" class="block text-sm text-gray-400 mb-2">Message</label>
-              <textarea
-                id="message"
-                name="message"
-                rows="6"
-                v-model="formData.message"
-                placeholder="Tell us about your project..."
-                required
-                class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-blue-500/50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 resize-none"
-              ></textarea>
+              <div class="relative">
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="6"
+                  v-model="formData.message"
+                  :maxlength="MESSAGE_MAX"
+                  placeholder="Tell us about your project..."
+                  required
+                  class="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-blue-500/50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all duration-300 resize-none"
+                ></textarea>
+                <div class="pointer-events-none absolute bottom-2 right-2 text-xs flex items-center gap-2 bg-black/30 backdrop-blur-sm px-2 py-0.5 rounded">
+                  <span class="text-gray-400">{{ (formData.message || '').length }}/{{ MESSAGE_MAX }}</span>
+                </div>
+              </div>
             </div>
 
             <button
               type="submit"
               ref="submitRef"
+              :disabled="loading"
+              :class="{'opacity-60 cursor-not-allowed': loading}"
               class="w-full px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-white hover:shadow-[0_0_40px_rgba(59,130,246,0.5)] transition-all duration-300 flex items-center justify-center gap-2 group"
             >
               Send Message
@@ -126,9 +140,10 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { useMotion } from '@vueuse/motion'
 import * as Icons from 'lucide-vue-next'
+import axios from 'axios'
 
 const props = defineProps({
   contactInfo: {
@@ -192,13 +207,30 @@ const formData = reactive({
   message: '',
 })
 
-const handleSubmit = () => {
-  console.log('Form submitted:', formData)
+const MESSAGE_MAX = 500
+const messageRemaining = computed(() => Math.max(0, MESSAGE_MAX - ((formData.message || '').length)))
 
-  formData.name = ''
-  formData.email = ''
-  formData.subject = ''
-  formData.message = ''
+const SUBJECT_MAX = 255
+const subjectRemaining = computed(() => Math.max(0, SUBJECT_MAX - ((formData.subject || '').length)))
+
+const loading = ref(false)
+const serverMessage = ref('')
+
+const handleSubmit = async () => {
+  loading.value = true
+  serverMessage.value = ''
+  try {
+    await axios.post('/api/contact-messages', { ...formData })
+    serverMessage.value = 'Message sent successfully'
+    formData.name = ''
+    formData.email = ''
+    formData.subject = ''
+    formData.message = ''
+  } catch (e) {
+    serverMessage.value = 'Failed to send message'
+  } finally {
+    loading.value = false
+  }
 }
 
 /* ------------------------------
