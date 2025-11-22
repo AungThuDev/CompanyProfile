@@ -7,6 +7,8 @@ use App\Contracts\ArticleRepositoryInterface;
 use App\Contracts\ProjectRepositoryInterface;
 use App\Contracts\ServiceRepositoryInterface;
 use App\Contracts\CategoryRepositoryInterface;
+use App\Contracts\CompanyInfoRepositoryInterface;
+use App\Contracts\SocialAccountRepositoryInterface;
 
 class FrontendController extends Controller
 {
@@ -14,18 +16,26 @@ class FrontendController extends Controller
     protected ProjectRepositoryInterface $projectRepository;
     protected ArticleRepositoryInterface $articleRepository;
     protected CategoryRepositoryInterface $categoryRepository;
+    protected CompanyInfoRepositoryInterface $companyInfoRepository;
+    protected SocialAccountRepositoryInterface $socialAccountRepository;
+
 
 
     public function __construct(
         ServiceRepositoryInterface $serviceRepository,
         ProjectRepositoryInterface $projectRepository,
         ArticleRepositoryInterface $articleRepository,
-        CategoryRepositoryInterface $categoryRepository
+        CategoryRepositoryInterface $categoryRepository,
+        CompanyInfoRepositoryInterface $companyInfoRepository,
+        SocialAccountRepositoryInterface $socialAccountRepository
+
     ) {
         $this->serviceRepository = $serviceRepository;
         $this->projectRepository = $projectRepository;
         $this->articleRepository = $articleRepository;
         $this->categoryRepository = $categoryRepository;
+        $this->companyInfoRepository = $companyInfoRepository;
+        $this->socialAccountRepository = $socialAccountRepository;
     }
 
     public function index()
@@ -119,9 +129,15 @@ class FrontendController extends Controller
             $featuredPostArray = null;
         }
 
-
-
-
+        $contactInfo = $this->companyInfoRepository->getActive();
+        $socialLinks = $this->socialAccountRepository->all()->map(function ($socialLink) {
+            return [
+                'id' => $socialLink->id,
+                'logo' => $socialLink->logo,
+                'name' => $socialLink->name,
+                'account_link' => $socialLink->account_link,
+            ];
+        });
         $initialState = [
             'services' => $services,
             'projects' => $projects,
@@ -129,7 +145,10 @@ class FrontendController extends Controller
             'categories' => $categories,
             'featuredPosts' => $featuredPostArray,
             'allArticles' => $allArticles,
+            'contactInfo' => $contactInfo,
+            'socialLinks' => $socialLinks,
         ];
+
         return view('frontend.app', compact('initialState'));
     }
 }

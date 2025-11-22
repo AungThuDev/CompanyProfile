@@ -42,11 +42,11 @@
             <div class="flex gap-4">
               <div
                 v-for="social in socialLinks"
-                :key="social.label"
+                :key="social.id"
                 ref="el => socialRefs.push(el)"
                 class="p-3 rounded-lg bg-white/5 border border-white/10 hover:border-blue-500/50 hover:bg-blue-500/10 transition-all duration-300"
               >
-                <a :href="social.href">
+                <a :href="social.href" target="_blank" rel="noopener noreferrer">
                   <component :is="social.icon" class="w-5 h-5 text-gray-400 hover:text-blue-400" />
                 </a>
               </div>
@@ -116,7 +116,7 @@
               class="w-full px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-white hover:shadow-[0_0_40px_rgba(59,130,246,0.5)] transition-all duration-300 flex items-center justify-center gap-2 group"
             >
               Send Message
-              <Send class="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
+              <component :is="Icons.Send" class="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
             </button>
           </form>
         </div>
@@ -128,20 +128,63 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useMotion } from '@vueuse/motion'
-import { Mail, MapPin, Phone, Send, Github, Linkedin, Twitter } from 'lucide-vue-next'
+import * as Icons from 'lucide-vue-next'
 
+const props = defineProps({
+  contactInfo: {
+    type: Object,
+    default: () => ({})
+  },
+  socialLinks: {
+    type: Array,
+    default: () => []
+  },
+})
+
+/* -----------------------------------
+   CONTACT INFO (Dynamic Lucide Icons)
+------------------------------------*/
 const contactInfo = [
-  { icon: Mail, label: 'Email', value: 'hello@techwave.com' },
-  { icon: Phone, label: 'Phone', value: '+1 (555) 123-4567' },
-  { icon: MapPin, label: 'Location', value: 'San Francisco, CA' },
+  {
+    icon: Icons.Mail,
+    label: 'Email',
+    value: props.contactInfo.email,
+  },
+  {
+    icon: Icons.Phone,
+    label: 'Phone',
+    value: props.contactInfo.phone,
+  },
+  {
+    icon: Icons.MapPin,
+    label: 'Location',
+    value: props.contactInfo.address,
+  },
 ]
 
-const socialLinks = [
-  { icon: Github, href: '#', label: 'GitHub' },
-  { icon: Linkedin, href: '#', label: 'LinkedIn' },
-  { icon: Twitter, href: '#', label: 'Twitter' },
-]
+/* -----------------------------------
+   SOCIAL LINKS (Dynamic icon mapping)
+   Backend sends: name = "github"
+------------------------------------*/
+const socialLinks = props.socialLinks.map((social) => {
+    const toPascal = (str) =>
+    str
+        .split(" ")
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+        .join("");
+    const iconComponent = Icons[toPascal(social.name)] || Icons.HelpCircle;
 
+  return {
+    id: social.id,
+    icon: iconComponent,
+    href: social.account_link,
+    label: social.name,
+  }
+})
+
+/* ------------------------------
+   FORM DATA
+-------------------------------*/
 const formData = reactive({
   name: '',
   email: '',
@@ -151,14 +194,16 @@ const formData = reactive({
 
 const handleSubmit = () => {
   console.log('Form submitted:', formData)
-  // Reset form
+
   formData.name = ''
   formData.email = ''
   formData.subject = ''
   formData.message = ''
 }
 
-// Refs for motion
+/* ------------------------------
+   ANIMATIONS
+-------------------------------*/
 const headerRef = ref(null)
 const infoRef = ref(null)
 const contactRefs = ref([])
@@ -167,7 +212,6 @@ const formRef = ref(null)
 const submitRef = ref(null)
 
 onMounted(() => {
-  // Animate header
   if (headerRef.value) {
     useMotion(headerRef.value, {
       initial: { opacity: 0, y: 30 },
@@ -176,7 +220,6 @@ onMounted(() => {
     })
   }
 
-  // Animate contact info
   contactRefs.value.forEach((el, i) => {
     if (el) {
       useMotion(el, {
@@ -187,7 +230,6 @@ onMounted(() => {
     }
   })
 
-  // Animate social icons
   socialRefs.value.forEach((el) => {
     if (el) {
       useMotion(el, {
@@ -200,7 +242,6 @@ onMounted(() => {
     }
   })
 
-  // Animate form
   if (formRef.value) {
     useMotion(formRef.value, {
       initial: { opacity: 0, x: 50 },
@@ -209,7 +250,6 @@ onMounted(() => {
     })
   }
 
-  // Animate submit button
   if (submitRef.value) {
     useMotion(submitRef.value, {
       whileHover: { scale: 1.02 },
@@ -219,3 +259,4 @@ onMounted(() => {
   }
 })
 </script>
+

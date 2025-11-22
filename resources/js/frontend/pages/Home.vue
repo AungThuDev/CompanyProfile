@@ -23,5 +23,5 @@ const props = defineProps({
   <portfolio-component :projects="props.initialState.projects" />
     <blog-section-component :blogPosts="props.initialState.blogPosts" :featuredPosts="props.initialState.featuredPosts" />
   <about-component />
-  <contact-component />
+  <contact-component :contactInfo="props.initialState.contactInfo" :socialLinks="props.initialState.socialLinks" />
 </template>
