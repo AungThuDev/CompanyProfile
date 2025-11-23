@@ -141,7 +141,7 @@
 
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue'
-import { useMotion } from '@vueuse/motion'
+import { useInViewMotion } from '../composables/useInViewMotion'
 import * as Icons from 'lucide-vue-next'
 import axios from 'axios'
 
@@ -245,7 +245,7 @@ const submitRef = ref(null)
 
 onMounted(() => {
   if (headerRef.value) {
-    useMotion(headerRef.value, {
+    useInViewMotion(headerRef, {
       initial: { opacity: 0, y: 30 },
       enter: { opacity: 1, y: 0 },
       transition: { duration: 0.6 },
@@ -254,7 +254,7 @@ onMounted(() => {
 
   contactRefs.value.forEach((el, i) => {
     if (el) {
-      useMotion(el, {
+      useInViewMotion({ value: el }, {
         initial: { opacity: 0, y: 20 },
         enter: { opacity: 1, y: 0 },
         transition: { duration: 0.5, delay: i * 0.1 },
@@ -264,7 +264,7 @@ onMounted(() => {
 
   socialRefs.value.forEach((el) => {
     if (el) {
-      useMotion(el, {
+      useInViewMotion({ value: el }, {
         initial: { opacity: 0, y: 10 },
         enter: { opacity: 1, y: 0 },
         whileHover: { scale: 1.1 },
@@ -275,7 +275,7 @@ onMounted(() => {
   })
 
   if (formRef.value) {
-    useMotion(formRef.value, {
+    useInViewMotion(formRef, {
       initial: { opacity: 0, x: 50 },
       enter: { opacity: 1, x: 0 },
       transition: { duration: 0.8 },
@@ -283,7 +283,7 @@ onMounted(() => {
   }
 
   if (submitRef.value) {
-    useMotion(submitRef.value, {
+    useInViewMotion(submitRef, {
       whileHover: { scale: 1.02 },
       whileTap: { scale: 0.98 },
       transition: { duration: 0.2 },

@@ -145,7 +145,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useMotion } from '@vueuse/motion'
+import { useInViewMotion } from '../composables/useInViewMotion'
 import { Calendar, ArrowRight , Tags } from 'lucide-vue-next'
 import ImageWithFallback from './figma/ImageWithFallback.vue'
 
@@ -171,11 +171,11 @@ const regularRefs = ref([])
 const viewAllRef = ref(null)
 
 onMounted(() => {
-    if (headerRef.value) useMotion(headerRef.value, { initial: { opacity: 0, y: 30 }, enter: { opacity: 1, y: 0 }, transition: { duration: 0.6 } })
-    if (featuredRef.value) useMotion(featuredRef.value, { initial: { opacity: 0, y: 30 }, enter: { opacity: 1, y: 0 }, transition: { duration: 0.6 } })
+    if (headerRef.value) useInViewMotion(headerRef, { initial: { opacity: 0, y: 30 }, enter: { opacity: 1, y: 0 }, transition: { duration: 0.6 } })
+    if (featuredRef.value) useInViewMotion(featuredRef, { initial: { opacity: 0, y: 30 }, enter: { opacity: 1, y: 0 }, whileHover: { scale: 1.02 }, whileTap: { scale: 0.98 }, transition: { duration: 0.6 } })
     regularRefs.value.forEach((el, i) => {
-        if (el) useMotion(el, { initial: { opacity: 0, y: 30 }, enter: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: i * 0.1 } })
+        if (el) useInViewMotion({ value: el }, { initial: { opacity: 0, y: 30 }, enter: { opacity: 1, y: 0 }, whileHover: { scale: 1.02 }, whileTap: { scale: 0.98 }, transition: { duration: 0.6, delay: i * 0.1 } })
     })
-    if (viewAllRef.value) useMotion(viewAllRef.value, { initial: { opacity: 0, y: 30 }, enter: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: 0.4 } })
+    if (viewAllRef.value) useInViewMotion(viewAllRef, { initial: { opacity: 0, y: 30 }, enter: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay: 0.4 } })
 })
 </script>

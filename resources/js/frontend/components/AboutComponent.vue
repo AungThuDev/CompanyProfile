@@ -71,7 +71,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { useMotion } from '@vueuse/motion'
+import { useInViewMotion } from '../composables/useInViewMotion'
 import ImageWithFallback from './figma/ImageWithFallback.vue'
 import { CheckCircle, Users, Award, TrendingUp } from 'lucide-vue-next'
 
@@ -95,32 +95,28 @@ const highlightRefs = ref([])
 const statRefs = ref([])
 
 onMounted(() => {
-  // Image animation
-  useMotion(imageMotion, {
+  useInViewMotion(imageMotion, {
     initial: { opacity: 0, x: -50 },
     enter: { opacity: 1, x: 0 },
     transition: { duration: 0.8 },
   })
 
-  // Content animation
-  useMotion(contentMotion, {
+  useInViewMotion(contentMotion, {
     initial: { opacity: 0, x: 50 },
     enter: { opacity: 1, x: 0 },
     transition: { duration: 0.8 },
   })
 
-  // Highlights animation
   highlightRefs.value.forEach((el, index) => {
-    useMotion(el, {
+    useInViewMotion({ value: el }, {
       initial: { opacity: 0, x: 20 },
       enter: { opacity: 1, x: 0 },
       transition: { duration: 0.5, delay: index * 0.1 },
     })
   })
 
-  // Stats animation
   statRefs.value.forEach((el, index) => {
-    useMotion(el, {
+    useInViewMotion({ value: el }, {
       initial: { opacity: 0, x: -50 },
       enter: { opacity: 1, x: 0 },
       transition: { duration: 0.8, delay: index * 0.1 },

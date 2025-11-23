@@ -50,7 +50,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useMotion } from '@vueuse/motion'
+import { useInViewMotion } from '../composables/useInViewMotion'
 import { Code2, Palette, Smartphone, Cloud, Lock, Zap } from 'lucide-vue-next'
 import ImageWithFallback from './figma/ImageWithFallback.vue'
 
@@ -80,30 +80,29 @@ const serviceRefs = ref([])
 const hoverRefs = ref([])
 
 onMounted(() => {
-  // Animate header
   if (headerRef.value) {
-    useMotion(headerRef.value, {
+    useInViewMotion(headerRef, {
       initial: { opacity: 0, y: 30 },
       enter: { opacity: 1, y: 0 },
       transition: { duration: 0.6 }
     })
   }
 
-  // Animate each service card
   serviceRefs.value.forEach((el, index) => {
     if (el) {
-      useMotion(el, {
+      useInViewMotion({ value: el }, {
         initial: { opacity: 0, y: 30 },
         enter: { opacity: 1, y: 0 },
+        whileHover: { scale: 1.02 },
+        whileTap: { scale: 0.98 },
         transition: { duration: 0.6, delay: index * 0.1 }
       })
     }
   })
 
-  // Animate hover arrow on hover
   hoverRefs.value.forEach((el) => {
     if (el) {
-      useMotion(el, {
+      useInViewMotion({ value: el }, {
         initial: { opacity: 0, x: -10 },
         whileHover: { opacity: 1, x: 0 },
         transition: { duration: 0.3 }

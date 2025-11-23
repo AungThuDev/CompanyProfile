@@ -46,7 +46,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useMotion } from '@vueuse/motion'
+import { useInViewMotion } from '../composables/useInViewMotion'
 import { ExternalLink } from 'lucide-vue-next'
 import ImageWithFallback from './figma/ImageWithFallback.vue'
 
@@ -62,7 +62,7 @@ const projectRefs = ref([])
 
 onMounted(() => {
     if (headerRef.value) {
-        useMotion(headerRef.value, {
+        useInViewMotion(headerRef, {
             initial: { opacity: 0, y: 30 },
             enter: { opacity: 1, y: 0 },
             transition: { duration: 0.6 }
@@ -71,9 +71,11 @@ onMounted(() => {
 
     projectRefs.value.forEach((el, i) => {
         if (el) {
-            useMotion(el, {
+            useInViewMotion({ value: el }, {
                 initial: { opacity: 0, y: 30 },
                 enter: { opacity: 1, y: 0 },
+                whileHover: { scale: 1.02 },
+                whileTap: { scale: 0.98 },
                 transition: { duration: 0.6, delay: i * 0.1 }
             })
         }
