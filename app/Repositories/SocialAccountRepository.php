@@ -32,6 +32,11 @@ class SocialAccountRepository implements SocialAccountRepositoryInterface
             ->paginate($perPage);
     }
 
+    public function getTopSocialAccounts(int $limit = 6) 
+    { 
+        return $this->model->where('display_order', 'asc')->limit($limit)->get();
+    }
+
     public function find(int $id)
     {
         return $this->model->findOrFail($id);
