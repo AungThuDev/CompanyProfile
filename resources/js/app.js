@@ -14,5 +14,11 @@ if (el) {
   app.use(router);
   app.mount('#mixed-app');
 }
+window.history.scrollRestoration = 'manual';
+
+window.addEventListener('load', () => {
+    window.scrollTo(0, 0);
+});
+
 
 
