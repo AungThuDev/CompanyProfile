@@ -130,7 +130,7 @@ class FrontendController extends Controller
         }
 
         $contactInfo = $this->companyInfoRepository->getActive();
-        $socialLinks = $this->socialAccountRepository->all()->map(function ($socialLink) {
+        $socialLinks = $this->socialAccountRepository->getTopSocialAccounts()->map(function ($socialLink) {
             return [
                 'id' => $socialLink->id,
                 'logo' => $socialLink->logo,
@@ -138,6 +138,7 @@ class FrontendController extends Controller
                 'account_link' => $socialLink->account_link,
             ];
         });
+
         $initialState = [
             'services' => $services,
             'projects' => $projects,
