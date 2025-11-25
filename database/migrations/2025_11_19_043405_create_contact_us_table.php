@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('is_read')->default(false);
             $table->timestamp('replied_at')->nullable();
             $table->text('reply_message')->nullable();
+            $table->ipAddress('ip_address')->nullable();
             $table->foreignId('replied_by')
             ->nullable()
             ->constrained('users')

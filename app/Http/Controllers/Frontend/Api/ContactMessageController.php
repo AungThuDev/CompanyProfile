@@ -24,7 +24,9 @@ class ContactMessageController extends Controller
             'message' => ['required','string','max:5000'],
         ]);
         try {
-            $this->contactUsRepository->create($data);
+            $this->contactUsRepository->create(array_merge($data, [
+                'ip_address' => $request->ip(),
+            ]));
         } catch (\Exception $e) {
             return response()->json([
                 'message' => $e->getMessage(),

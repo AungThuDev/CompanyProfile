@@ -32,6 +32,7 @@
         <p><strong>Message:</strong></p>
         <div class="p-3 bg-gray-50 rounded border text-gray-700">{{ $contact->message }}</div>
         <p><strong>Received At:</strong> {{ $contact->created_at->format('Y-m-d H:i') }}</p>
+        <p><strong>IP Address:</strong> {{ $contact->ip_address ?? 'N/A' }}</p>
         <p><strong>Status:</strong> 
             @if($contact->is_read)
                <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded-full">

@@ -19,6 +19,7 @@ class ContactUs extends Model
         'replied_at',
         'reply_message',     
         'replied_by',
+        'ip_address',
     ];
 
     protected $casts = [ 
