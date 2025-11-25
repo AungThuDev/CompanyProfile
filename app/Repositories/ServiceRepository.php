@@ -127,7 +127,7 @@ class ServiceRepository implements ServiceRepositoryInterface
 
     private function storeIcon(UploadedFile $icon)
     {
-        return $icon->store('services/icons', 'public');
+        return $icon->store('services', 'public');
     }
 
     private function deleteOldIcon(?string $path)
