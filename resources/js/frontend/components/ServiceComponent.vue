@@ -15,7 +15,7 @@
       <!-- Services Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div
-          v-for="(service, index) in servicesWithIcon"
+          v-for="(service, index) in services"
           :key="service.id"
           ref="el => serviceRefs[index] = el"
           class="group relative p-8 rounded-2xl bg-gradient-to-br from-white/5 to-white/0 border border-white/10 hover:border-blue-500/50 transition-all duration-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.15)]"
@@ -27,7 +27,7 @@
             <div
               class="mb-6 inline-flex p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-white/10 group-hover:scale-110 transition-transform duration-300"
             >
-              <component :is="service.icon" class="w-6 h-6 text-blue-400" />
+              <ImageWithFallback :src="`/storage/${service.icon}`" class="w-6 h-6 text-blue-400" />
             </div>
 
             <h3 class="text-white mb-3">{{ service.title }}</h3>
@@ -51,7 +51,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useInViewMotion } from '../composables/useInViewMotion'
-import { Code2, Palette, Smartphone, Cloud, Lock, Zap } from 'lucide-vue-next'
+
 import ImageWithFallback from './figma/ImageWithFallback.vue'
 
 const props = defineProps({
@@ -60,11 +60,7 @@ const props = defineProps({
     default: () => []
   }
 })
-const iconArray = [Code2, Palette, Smartphone, Cloud, Lock, Zap]
-const servicesWithIcon = props.services.map(s => ({
-  ...s,
-  icon: iconArray[Math.floor(Math.random() * iconArray.length)]
-}))
+
 // const services = [
 //   { icon: Code2, title: 'Web Development', description: 'Custom web applications built with modern frameworks and best practices.' },
 //   { icon: Smartphone, title: 'Mobile Apps', description: 'Native and cross-platform mobile solutions for iOS and Android.' },

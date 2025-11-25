@@ -188,7 +188,13 @@
                             />
                         </button>
                     </form>
+
+                    <div v-if="serverMessage" class="flex items-center gap-2 rounded-lg px-4 py-3 mt-5 border text-sm" :class="serverType === 'success' ? 'bg-green-500/10 border-green-500/30 text-green-300' : 'bg-red-500/10 border-red-500/30 text-red-300'">
+                        <component :is="serverType === 'success' ? Icons.CheckCircle2 : Icons.AlertCircle" class="w-5 h-5"/>
+                        <span>{{ serverMessage }}</span>
+                    </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -274,19 +280,33 @@ const subjectRemaining = computed(() =>
 
 const loading = ref(false);
 const serverMessage = ref("");
+const serverType = ref("success");
+const messageTimer = ref(null);
 
 const handleSubmit = async () => {
     loading.value = true;
+    if (messageTimer.value) {
+        clearTimeout(messageTimer.value);
+        messageTimer.value = null;
+    }
     serverMessage.value = "";
     try {
         await axios.post("/api/contact-messages", { ...formData });
-        serverMessage.value = "Message sent successfully";
+        serverType.value = "success";
+        serverMessage.value = "Contact message sent successfully";
         formData.name = "";
         formData.email = "";
         formData.subject = "";
         formData.message = "";
+        messageTimer.value = setTimeout(() => {
+            serverMessage.value = "";
+        }, 4000);
     } catch (e) {
-        serverMessage.value = "Failed to send message";
+        serverType.value = "error";
+        serverMessage.value = "Contact message sending failed";
+        messageTimer.value = setTimeout(() => {
+            serverMessage.value = "";
+        }, 5000);
     } finally {
         loading.value = false;
     }

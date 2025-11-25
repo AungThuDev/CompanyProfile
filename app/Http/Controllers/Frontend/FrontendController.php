@@ -44,6 +44,7 @@ class FrontendController extends Controller
             return [
                 'id' => $service->id,
                 'title' => $service->title,
+                'icon' => $service->icon,
                 'slug' => $service->slug,
                 'description' => $service->description,
             ];
