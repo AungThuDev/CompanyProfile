@@ -46,6 +46,12 @@
         <p class="text-2xl font-bold mt-2 text-gray-900">{{ $articleCount }}</p>
     </a>
 
+    {{-- Contact Us Messages Card --}}
+    <a href="{{ route('dashboard.contacts.index') }}" class="block bg-white p-5 rounded-lg border border-gray-200 hover:shadow-md transition">
+        <h3 class="text-sm font-medium text-gray-600">Contact Messages</h3>
+        <p class="text-2xl font-bold mt-2 text-gray-900">{{ $contactMessagesCount }}</p>
+    </a>
+    
     {{-- Social Accounts Card --}}
     <a href="{{ route('dashboard.social-accounts.index') }}" class="block bg-white p-5 rounded-lg border border-gray-200 hover:shadow-md transition">
         <h3 class="text-sm font-medium text-gray-600">Social Accounts</h3>

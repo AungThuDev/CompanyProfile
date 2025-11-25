@@ -10,6 +10,7 @@ use App\Contracts\CategoryRepositoryInterface;
 use App\Contracts\TagRepositoryInterface;
 use App\Contracts\ArticleRepositoryInterface;
 use App\Contracts\CompanyInfoRepositoryInterface;
+use App\Contracts\ContactUsRepositoryInterface;
 use App\Contracts\SocialAccountRepositoryInterface;
 use App\Http\Controllers\Controller;
 
@@ -24,6 +25,7 @@ class DashboardController extends Controller
     protected ArticleRepositoryInterface $articleRepository;
     protected CompanyInfoRepositoryInterface $companyInfoRepository;
     protected SocialAccountRepositoryInterface $socialAccountRepository;
+    protected ContactUsRepositoryInterface $contactUsRepository;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
@@ -34,7 +36,8 @@ class DashboardController extends Controller
         TagRepositoryInterface $tagRepository,
         ArticleRepositoryInterface $articleRepository,
         CompanyInfoRepositoryInterface $companyInfoRepository,
-        SocialAccountRepositoryInterface $socialAccountRepository
+        SocialAccountRepositoryInterface $socialAccountRepository,
+        ContactUsRepositoryInterface $contactUsRepository
     )
     {
         $this->userRepository = $userRepository;
@@ -46,6 +49,7 @@ class DashboardController extends Controller
         $this->articleRepository = $articleRepository;
         $this->companyInfoRepository = $companyInfoRepository;
         $this->socialAccountRepository = $socialAccountRepository;
+        $this->contactUsRepository = $contactUsRepository;
     }
 
     public function index()
@@ -59,6 +63,7 @@ class DashboardController extends Controller
         $articleCount = count($this->articleRepository->all());
         $companyInfoCount = count($this->companyInfoRepository->all());
         $socialAccountCount = count($this->socialAccountRepository->all());
+        $contactMessagesCount = count($this->contactUsRepository->all());
 
         return view(
             'dashboard.index', 
@@ -71,7 +76,8 @@ class DashboardController extends Controller
                 'tagCount', 
                 'articleCount',
                 'companyInfoCount',
-                'socialAccountCount'
+                'socialAccountCount',
+                'contactMessagesCount',
             )
         );
     }

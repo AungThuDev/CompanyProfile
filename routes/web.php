@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\{
     AuthController,
     CategoryController,
     CompanyInfoController,
+    ContactMessageController,
     DashboardController,
     ProjectController,
     ProjectTypeController,
@@ -57,6 +58,14 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
         'company-infos'   => CompanyInfoController::class,
         'social-accounts' => SocialAccountController::class,
     ]);
+
+    Route::prefix('contacts')->name('contacts.')->controller(ContactMessageController::class)->group(function () { 
+        Route::get('', 'index')->name('index');
+        Route::get('/{id}', 'show')->name('show');
+        Route::post('/{id}/reply', 'reply')->name('reply');
+        Route::delete('/{id}', 'destroy')->name('destroy');
+    });
+
 });
 
 // Logout

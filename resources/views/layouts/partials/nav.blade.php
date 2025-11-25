@@ -1,4 +1,4 @@
-<header class="bg-white shadow-sm border-b border-gray-200 px-5 py-3">
+<header class="sticky top-0 z-10 bg-white shadow-sm border-b border-gray-200 px-5 py-3">
     <div class="flex justify-between items-center">
         <a href="{{ route('dashboard.index') }}" class="block">
             <h1 class="text-xl font-semibold text-gray-800">TechWave</h1>
