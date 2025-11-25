@@ -14,15 +14,15 @@
     {{-- Details Card --}}
     <div class="bg-white rounded-lg border border-gray-200 p-6 space-y-4">
 
-        {{-- Image --}}
+        {{-- Icon --}}
         <div class="flex justify-center mb-4">
-            @if($service->image && file_exists(storage_path('app/public/' . $service->image)))
-                <img src="{{ asset('storage/' . $service->image) }}" 
+            @if($service->icon && file_exists(storage_path('app/public/' . $service->icon)))
+                <img src="{{ asset('storage/' . $service->icon) }}" 
                      alt="{{ $service->title }}" 
-                     class="h-48 w-48 object-cover rounded-md border">
+                     class="h-48 w-48 object-contain rounded-md border bg-gray-50 p-6">
             @else
                 <div class="h-48 w-48 flex items-center justify-center bg-gray-100 text-gray-400 rounded-md border">
-                    No Image
+                    No Icon
                 </div>
             @endif
         </div>

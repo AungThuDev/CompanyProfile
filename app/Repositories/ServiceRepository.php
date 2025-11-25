@@ -45,13 +45,13 @@ class ServiceRepository implements ServiceRepositoryInterface
         return $this->model->findOrFail($id);
     }
 
-    public function create(array $data, UploadedFile $file)
+    public function create(array $data, UploadedFile $icon)
     {
         DB::beginTransaction();
 
         try {
             $data['slug'] = $this->generateSlug($data['title']);
-            $data['image'] = $this->storeImage($file);
+            $data['icon'] = $this->storeIcon($icon);
             $data['created_by'] = Auth::id();
 
             $data['display_order'] = ($this->model->max('display_order') ?? 0) + 1;
@@ -68,18 +68,18 @@ class ServiceRepository implements ServiceRepositoryInterface
         }
     }
 
-    public function update(int $id, array $data, ?UploadedFile $file = null)
+    public function update(int $id, array $data, ?UploadedFile $icon = null)
     {
         $service = $this->find($id);
 
         DB::beginTransaction();
 
         try {
-            if ($file instanceof UploadedFile) {
-                $this->deleteOldImage($service->image);
-                $data['image'] = $this->storeImage($file);
+            if ($icon instanceof UploadedFile) {
+                $this->deleteOldIcon($service->icon);
+                $data['icon'] = $this->storeIcon($icon);
             } else {
-                unset($data['image']);
+                unset($data['icon']);
             }
 
             if (isset($data['title']) && $data['title'] !== $service->title) {
@@ -107,7 +107,7 @@ class ServiceRepository implements ServiceRepositoryInterface
         DB::beginTransaction();
 
         try {
-            $this->deleteOldImage($service->image);
+            $this->deleteOldIcon($service->icon);
             $service->delete();
 
             DB::commit();
@@ -125,12 +125,12 @@ class ServiceRepository implements ServiceRepositoryInterface
         return Str::slug($title);
     }
 
-    private function storeImage(UploadedFile $file)
+    private function storeIcon(UploadedFile $icon)
     {
-        return $file->store('services', 'public');
+        return $icon->store('services/icons', 'public');
     }
 
-    private function deleteOldImage(?string $path)
+    private function deleteOldIcon(?string $path)
     {
         if ($path && Storage::disk('public')->exists($path)) {
             Storage::disk('public')->delete($path);

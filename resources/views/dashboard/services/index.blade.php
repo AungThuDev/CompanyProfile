@@ -30,7 +30,7 @@
             <thead class="bg-gray-50">
                 <tr>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
-                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
+                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Icon</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order</th>
@@ -43,7 +43,13 @@
                     <tr class="hover:bg-gray-50">
                         <td class="px-4 py-2 text-sm text-gray-700">{{ $index + 1 }}</td>
                         <td class="px-4 py-2">
-                            <img src="{{ asset('storage/' . $service->image) }}" class="h-12 w-12 object-cover rounded">
+                            @if($service->icon && file_exists(storage_path('app/public/' . $service->icon)))
+                                <img src="{{ asset('storage/' . $service->icon) }}" class="h-12 w-12 object-contain rounded bg-gray-50 p-2">
+                            @else
+                                <div class="h-12 w-12 flex items-center justify-center rounded bg-gray-100 text-xs text-gray-400 border">
+                                    Icon
+                                </div>
+                            @endif
                         </td>
                         <td class="px-4 py-2 text-sm text-gray-900">{{ $service->title }}</td>
                         <td class="px-4 py-2 text-sm text-gray-500">{{ Str::limit($service->description, 60) }}</td>

@@ -37,11 +37,11 @@ class ServiceController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'image' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'icon' => ['required', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
         ]);
 
         try {
-            $this->serviceRepository->create($validated, $request->file('image'));
+            $this->serviceRepository->create($validated, $request->file('icon'));
             return redirect()
                 ->route('dashboard.services.index')
                 ->with('success', 'Service created successfully.');
@@ -70,11 +70,11 @@ class ServiceController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'display_order' => ['required', 'integer', 'min:1'],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'icon' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
         ]);
 
         try {
-            $this->serviceRepository->update($id, $validated, $request->file('image'));
+            $this->serviceRepository->update($id, $validated, $request->file('icon'));
             return redirect()
                 ->route('dashboard.services.index')
                 ->with('success', 'Service updated successfully.');

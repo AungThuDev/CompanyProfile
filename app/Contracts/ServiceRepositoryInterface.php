@@ -14,9 +14,9 @@ interface ServiceRepositoryInterface
 
     public function find(int $id);
 
-    public function create(array $data, UploadedFile $file);
+    public function create(array $data, UploadedFile $icon);
 
-    public function update(int $id, array $data, ?UploadedFile $file = null);
+    public function update(int $id, array $data, ?UploadedFile $icon = null);
 
     public function destroy(int $id);
 }

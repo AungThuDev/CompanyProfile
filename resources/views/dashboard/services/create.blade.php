@@ -41,11 +41,11 @@
                     <textarea name="description" rows="3" class="block w-full border border-gray-300 rounded-md px-3 py-2 text-sm">{{ old('description') }}</textarea>
                 </div>
 
-                {{-- Image --}}
+                {{-- Icon --}}
                 <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Service Image <span class="text-red-500">*</span></label>
-                    <input type="file" name="image" accept="image/*" class="block w-full text-sm text-gray-600">
-                    <p class="text-xs text-gray-400 mt-1">JPG, JPEG, PNG, WEBP. Max 2MB.</p>
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Service Icon <span class="text-red-500">*</span></label>
+                    <input type="file" name="icon" accept="image/*" class="block w-full text-sm text-gray-600">
+                    <p class="text-xs text-gray-400 mt-1">JPG, JPEG, PNG, WEBP, SVG. Max 2MB.</p>
                 </div>
 
                 {{-- Actions --}}
