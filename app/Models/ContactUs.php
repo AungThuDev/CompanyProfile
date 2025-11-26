@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ContactUs extends Model
 {
@@ -16,18 +16,16 @@ class ContactUs extends Model
         'subject',
         'message',
         'is_read',
-        'replied_at',
-        'reply_message',     
-        'replied_by',
         'ip_address',
     ];
 
-    protected $casts = [ 
-        'replied_at' => 'datetime',
-    ];
+    public function replies(): HasMany
+    {
+        return $this->hasMany(ContactReply::class, 'contact_us_id');
+    }
 
-	public function repliedBy(): BelongsTo
-	{
-		return $this->belongsTo(User::class, 'replied_by');
-	}
+    public function latestReply()
+    {
+        return $this->hasOne(ContactReply::class, 'contact_us_id')->latestOfMany();
+    }
 }

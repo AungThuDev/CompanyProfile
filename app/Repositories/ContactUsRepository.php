@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Contracts\ContactUsRepositoryInterface;
 use App\Models\ContactUs;
+use App\Models\ContactReply;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -19,17 +20,19 @@ class ContactUsRepository implements ContactUsRepositoryInterface
 
     public function all()
     {
-        return $this->model->all();
+        return $this->model->with('replies')->get();
     }
 
     public function paginate($perPage = 10)
     {
-        return $this->model->paginate($perPage);
+        return $this->model->with('replies')->paginate($perPage);
     }
 
     public function find($id)
     {
-        return $this->model->findOrFail($id);
+        return $this->model->with(['replies' => function($query) {
+            $query->with('repliedBy')->orderBy('created_at', 'desc');
+        }])->findOrFail($id);
     }
 
     public function create(array $data)
@@ -81,6 +84,29 @@ class ContactUsRepository implements ContactUsRepositoryInterface
         } catch (Exception $e) {
             DB::rollBack();
             Log::error("Contact deletion failed: {$e->getMessage()}");
+            throw $e;
+        }
+    }
+
+    public function addReply(int $contactId, array $data)
+    {
+        DB::beginTransaction();
+
+        try {
+            $contact = $this->find($contactId);
+            
+            $reply = ContactReply::create([
+                'contact_us_id' => $contactId,
+                'message' => $data['message'],
+                'replied_by' => $data['replied_by'] ?? null,
+            ]);
+
+            DB::commit();
+            return $reply;
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error("Contact reply creation failed: {$e->getMessage()}");
             throw $e;
         }
     }

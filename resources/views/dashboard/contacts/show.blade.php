@@ -44,33 +44,58 @@
         </p>
     </div>
 
-    {{-- Reply Section --}}
-    <div class="bg-white rounded-lg border border-gray-200 p-4 space-y-3">
-        <h2 class="text-sm font-semibold text-gray-700">Reply</h2>
+    {{-- Replies Section --}}
+    <div class="bg-white rounded-lg border border-gray-200 p-4 space-y-4">
+        <div class="flex justify-between items-center">
+            <h2 class="text-sm font-semibold text-gray-700">Replies ({{ $contact->replies->count() }})</h2>
+        </div>
 
-        @if($contact->reply_message)
-            <div class="p-3 bg-green-50 border border-green-200 rounded text-gray-700 space-y-1">
-                <p><strong>Replied at:</strong> {{ $contact->replied_at->format('Y-m-d H:i') }}</p>
-                <p><strong>Replied by:</strong> {{ $contact->repliedBy?->name ?? 'N/A' }}</p>
-                <p>{{ $contact->reply_message }}</p>
+        {{-- Existing Replies --}}
+        @if($contact->replies->count() > 0)
+            <div class="space-y-3">
+                @foreach($contact->replies->sortByDesc('created_at') as $reply)
+                    <div class="p-4 bg-green-50 border border-green-200 rounded-lg text-gray-700 space-y-2">
+                        <div class="flex justify-between items-start">
+                            <div class="space-y-1">
+                                <p class="text-xs text-gray-600">
+                                    <strong>Replied by:</strong> {{ $reply->repliedBy?->name ?? 'System' }}
+                                </p>
+                                <p class="text-xs text-gray-500">
+                                    {{ $reply->created_at->format('Y-m-d H:i:s') }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="pt-2 border-t border-green-200">
+                            <p class="text-sm whitespace-pre-wrap">{{ $reply->message }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <div class="p-3 bg-gray-50 border border-gray-200 rounded text-gray-500 text-sm text-center">
+                No replies yet. Be the first to reply!
             </div>
         @endif
 
-        <form action="{{ route('dashboard.contacts.reply', $contact->id) }}" method="POST" class="space-y-3">
-            @csrf
-            <textarea name="reply_message" rows="5" 
-                      class="w-full border border-gray-300 rounded p-2 text-sm"
-                      placeholder="Write your reply here..."></textarea>
+        {{-- Reply Form --}}
+        <div class="pt-4 border-t border-gray-200">
+            <h3 class="text-sm font-semibold text-gray-700 mb-3">Add New Reply</h3>
+            <form action="{{ route('dashboard.contacts.reply', $contact->id) }}" method="POST" class="space-y-3">
+                @csrf
+                <textarea name="reply_message" rows="5" 
+                          class="w-full border border-gray-300 rounded p-2 text-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                          placeholder="Write your reply here..."></textarea>
 
-            @error('reply_message')
-                <p class="text-red-600 text-sm">{{ $message }}</p>
-            @enderror
+                @error('reply_message')
+                    <p class="text-red-600 text-sm">{{ $message }}</p>
+                @enderror
 
-            <button type="submit" 
-                    class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-700">
-                Send Reply
-            </button>
-        </form>
+                <button type="submit" 
+                        class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-700 transition">
+                    Send Reply
+                </button>
+            </form>
+        </div>
     </div>
 
 </div>

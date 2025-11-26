@@ -64,9 +64,9 @@
                                 <span class="inline-block bg-red-100 text-red-800 text-xs font-semibold px-2 py-1 rounded-full">
                                     Unread
                                 </span>
-                            @elseif($msg->reply_message)
+                            @elseif($msg->replies->count() > 0)
                                 <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded-full">
-                                    Replied
+                                    Replied ({{ $msg->replies->count() }})
                                 </span>
                             @else
                                 <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded-full">

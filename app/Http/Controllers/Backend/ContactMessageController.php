@@ -51,9 +51,9 @@ class ContactMessageController extends Controller
         try {
             $contact = $this->contactUsRepository->find($id);
             
-            $this->contactUsRepository->update($id, [
-                'reply_message' => $validated['reply_message'],
-                'replied_at' => now(),
+            // Add reply using repository
+            $this->contactUsRepository->addReply($id, [
+                'message' => $validated['reply_message'],
                 'replied_by' => Auth::id(),
             ]);
 
