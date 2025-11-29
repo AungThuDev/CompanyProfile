@@ -56,6 +56,11 @@
                         <td class="px-4 py-2 text-center flex justify-center gap-2">
                             <a href="{{ route('dashboard.users.show', $user->id) }}" 
                                class="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200">View</a>
+
+                            <a href="{{ route('dashboard.profile', $user->id) }}" 
+                                class="px-2 py-1 text-xs bg-indigo-600 text-white rounded hover:bg-indigo-700">
+                                Edit
+                            </a>
                         
                             @if(auth()->id() !== $user->id) 
                             <form action="{{ route('dashboard.users.suspend', $user->id) }}" method="POST" class="inline-block">
