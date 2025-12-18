@@ -24,6 +24,7 @@ class User extends Authenticatable
         'address',
         'profile', 
         'bio',
+        'two_factor_enabled',
         'suspended_at',
         'password',
     ];
@@ -48,4 +49,9 @@ class User extends Authenticatable
         'suspended_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function twoFactorCodes()
+    { 
+        return $this->hasMany(TwoFactorCode::class);
+    }
 }

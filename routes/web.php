@@ -46,6 +46,8 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     // Settings
     Route::get('/settings', [UserController::class, 'settings'])->name('settings');
     Route::post('/settings/password', [UserController::class, 'changePassword'])->name('settings.password');
+    Route::post('/settings/2fa', [UserController::class, 'enableTwoFactor'])->name('settings.2fa.enable');
+    Route::delete('/settings/2fa', [UserController::class, 'disableTwoFactor'])->name('settings.2fa.disable');
 
     // Resources
     Route::resources([
@@ -77,6 +79,7 @@ Route::prefix('auth')->name('auth.')->controller(AuthController::class)->group(f
     Route::match(['get', 'post'], 'forgot-password', 'forgotPassword')->name('forgot-password');
     Route::match(['get', 'post'], 'reset-password', 'resetPassword')->name('reset-password');
     Route::match(['get', 'post'], 'verify-email', 'verifyEmail')->name('verify-email');
+    Route::match(['get', 'post'], '2fa-verify', 'verifyTwoFactor')->name('2fa.verify');
     Route::post('resend-email', 'resendEmail')->name('resend-email');
 });
 

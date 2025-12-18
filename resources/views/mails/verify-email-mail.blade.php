@@ -25,7 +25,7 @@
 
         <p>If you didn’t request this, just ignore this message.</p>
         <p style="font-size:12px;color:#777;text-align:center;margin-top:20px;">
-            This code expires in 20 minutes.
+            This code expires in 10 minutes.
         </p>
     </div>
 </body>

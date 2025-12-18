@@ -129,4 +129,54 @@ class UserController extends Controller
             ])->withInput();
         }
     }
+
+    public function enableTwoFactor()
+    {
+        $user = Auth::user();
+
+        if ($user->two_factor_enabled) {
+            return back()->with('success', 'Two-factor authentication is already enabled.');
+        }
+
+        try {
+            $user->update([
+                'two_factor_enabled' => true,
+            ]);
+
+            return back()->with('success', 'Two-factor authentication enabled successfully.');
+        } catch (Exception $e) {
+            return back()->withErrors([
+                'error' => 'Failed to enable two-factor authentication.',
+            ]);
+        }
+    }
+
+    public function disableTwoFactor()
+    {
+        $user = Auth::user();
+
+        if (! $user->two_factor_enabled) {
+            return back()->with('success', 'Two-factor authentication is already disabled.');
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $user->update([
+                'two_factor_enabled' => false,
+            ]);
+
+            $user->twoFactorCodes()->delete();
+
+            DB::commit();
+
+            return back()->with('success', 'Two-factor authentication disabled successfully.');
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return back()->withErrors([
+                'error' => 'Failed to disable two-factor authentication.',
+            ]);
+        }
+    }
 }

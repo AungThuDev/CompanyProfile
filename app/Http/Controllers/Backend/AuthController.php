@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Mail\ForgotPassword;
+use App\Mail\TwoFactorCodeMail;
 use App\Mail\VerifyEmail;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -21,68 +22,126 @@ class AuthController extends Controller
      * Show login form or handle login
      */
     public function login(Request $request)
-    { 
-        if($request->isMethod('get')) { 
-            // Redirect to dashboard if already authenticated
+    {
+        if ($request->isMethod('get')) {
             if (Auth::check()) {
                 return redirect()->route('dashboard.index');
             }
             return view('auth.login');
+        }if (Auth::check()) {
+            return redirect()->route('dashboard.index');
         }
+        
 
-        // Validate login request
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        // Attempt to authenticate
-        if (Auth::attempt($credentials)) {
-            if(Auth::user()->suspended_at) { 
-                Auth::logout();
-                return back()->withErrors([
-                    'email' => 'Your account has been suspended.',
-                ])->onlyInput('email');
-            }
-
-            if(!Auth::user()->email_verified_at) { 
-                Auth::logout();
-
-                $code = $this->generateCode();
-
-                try {
-                    DB::beginTransaction();
-
-                    DB::table('email_verify_codes')->insert([
-                        'email' => $credentials['email'], 
-                        'code' => $code, 
-                        'expires_at' => now()->addMinutes(20),
-                    ]);
-
-                    DB::commit();
-
-                    // Send email after transaction commits
-                    Mail::to($credentials['email'])->send(new VerifyEmail($code, $credentials['email']));
-
-                    return back()->with('status', 'We have emailed your email verification link!');
-                } catch (\Exception $e) {
-                    DB::rollBack();
-                    Log::error('Failed to create email verification code: ' . $e->getMessage());
-
-                    return back()->withErrors([
-                        'email' => 'An error occurred while processing your request. Please try again.',
-                    ])->onlyInput('email');
-                }
-            }
-
-            $request->session()->regenerate();
-            return redirect()->intended(route('dashboard.index'));
+        if (!Auth::attempt($credentials)) {
+            return back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ])->onlyInput('email');
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        $user = Auth::user();
+
+        /**
+         * 1️⃣ Suspended check
+         */
+        if ($user->suspended_at) {
+            Auth::logout();
+
+            return back()->withErrors([
+                'email' => 'Your account has been suspended.',
+            ])->onlyInput('email');
+        }
+
+        /**
+         * 2️⃣ Email verification check
+         */
+        if (!$user->email_verified_at) {
+            Auth::logout();
+
+            $code = $this->generateCode();
+
+            try {
+                DB::beginTransaction();
+
+                DB::table('email_verify_codes')->insert([
+                    'email' => $credentials['email'],
+                    'code' => $code,
+                    'expires_at' => now()->addMinutes(20),
+                ]);
+
+                DB::commit();
+
+                Mail::to($credentials['email'])->send(
+                    new VerifyEmail($code, $credentials['email'])
+                );
+
+                return back()->with('status', 'We have emailed your email verification link!');
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                return back()->withErrors([
+                    'email' => 'An error occurred while processing your request.',
+                ])->onlyInput('email');
+            }
+        }
+
+        /**
+         * 3️⃣ TWO-FACTOR AUTHENTICATION CHECK (NEW)
+         */
+        if ($user->two_factor_enabled) {
+
+            // Logout temporarily
+            Auth::logout();
+
+            $code = $this->generateCode();
+
+            DB::beginTransaction();
+
+            try {
+                // Clean previous codes
+                $user->twoFactorCodes()->delete();
+
+                // Store new 2FA code
+                $user->twoFactorCodes()->create([
+                    'code' => $code,
+                    'expires_at' => now()->addMinutes(10),
+                ]);
+
+                DB::commit();
+
+                // Send 2FA code
+                Mail::to($user->email)->send(
+                    new TwoFactorCodeMail($code, $user->email)
+                );
+
+                // Store user id temporarily in session
+                session([
+                    '2fa:user:id' => $user->id,
+                ]);
+
+                return redirect()->route('auth.2fa.verify');
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                return back()->withErrors([
+                    'email' => 'Failed to send two-factor authentication code.',
+                ])->onlyInput('email');
+            }
+        }
+
+        /**
+         * 4️⃣ Normal login success
+         */
+        $request->session()->regenerate();
+
+        return redirect()->intended(route('dashboard.index'));
     }
+
 
     /**
      * Log the user out
@@ -271,6 +330,56 @@ class AuthController extends Controller
             ])->onlyInput('email');
         }
     }
+
+    /**
+     * Verify Two-Factor Authentication Code
+     */
+    public function verifyTwoFactor(Request $request)
+    {
+        $userId = session('2fa:user:id');
+
+        if (!$userId) {
+            return redirect()->route('auth.login')->withErrors([
+                'email' => 'Your session has expired. Please login again.'
+            ]);
+        }
+
+        $user = User::find($userId);
+
+        if ($request->isMethod('get')) {
+            return view('auth.two-factor-verify');
+        }
+
+        $request->validate([
+            'code' => ['required', 'digits:6'],
+        ]);
+
+        $twoFactor = $user->twoFactorCodes()
+            ->where('code', $request->code)
+            ->where('expires_at', '>', now())
+            ->first();
+
+        if (!$twoFactor) {
+            return back()->withErrors([
+                'code' => 'Invalid or expired code.'
+            ]);
+        }
+
+        // Delete used code
+        $user->twoFactorCodes()->delete();
+
+        // Login the user
+        Auth::login($user);
+
+        // Remove 2FA session
+        $request->session()->forget('2fa:user:id');
+
+        // Regenerate session
+        $request->session()->regenerate();
+
+        return redirect()->intended(route('dashboard.index'));
+    }
+
 
     public function generateCode(int $length = 6) 
     { 

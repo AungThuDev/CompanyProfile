@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->string('profile')->nullable();
             $table->text('bio')->nullable();
+            $table->boolean('two_factor_enabled')->default(false);
             $table->timestamp('suspended_at')->nullable();
             $table->string('password');
             $table->rememberToken();

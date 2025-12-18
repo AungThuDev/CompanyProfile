@@ -29,7 +29,9 @@
         </div>
     @endif
 
-    {{-- Change Password --}}
+    {{-- ============================= --}}
+    {{-- CHANGE PASSWORD SECTION       --}}
+    {{-- ============================= --}}
     <div class="bg-white rounded-lg border border-gray-200 p-4">
         <h2 class="text-sm font-semibold text-gray-900 mb-3 flex items-center">
             <span class="w-0.5 h-4 bg-indigo-600 rounded-full mr-2"></span>
@@ -62,6 +64,56 @@
                 </button>
             </div>
         </form>
+    </div>
+
+
+    {{-- ============================= --}}
+    {{-- TWO FACTOR AUTHENTICATION     --}}
+    {{-- ============================= --}}
+    <div class="bg-white rounded-lg border border-gray-200 p-4">
+        <h2 class="text-sm font-semibold text-gray-900 mb-3 flex items-center">
+            <span class="w-0.5 h-4 bg-indigo-600 rounded-full mr-2"></span>
+            Two-Factor Authentication (2FA)
+        </h2>
+
+        @if (!auth()->user()?->two_factor_enabled)
+            {{-- 2FA Disabled View --}}
+            <p class="text-xs text-gray-600 mb-4">
+                Add an extra layer of security. When you enable 2FA, you will be required to enter a verification code sent to your email after entering your password.
+            </p>
+
+            <form method="POST" action="{{ route('dashboard.settings.2fa.enable') }}">
+                @csrf
+                <div class="flex justify-end">
+                    <button type="submit" class="px-4 py-2 text-sm bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                        Enable 2FA
+                    </button>
+                </div>
+            </form>
+        
+        @else
+            {{-- 2FA Enabled View --}}
+            <div class="flex items-center gap-2 mb-3">
+                <span class="inline-flex px-2 py-0.5 text-xs bg-green-100 text-green-700 rounded-full">
+                    Enabled
+                </span>
+            </div>
+
+            <p class="text-xs text-gray-600 mb-4">
+                2FA is currently active on your account. You will receive a verification code via email every time you log in.
+            </p>
+
+            <form method="POST" action="{{ route('dashboard.settings.2fa.disable') }}">
+                @csrf
+                @method('DELETE')
+
+                <div class="flex justify-end">
+                    <button type="submit" class="px-4 py-2 text-sm bg-red-600 text-white rounded-md hover:bg-red-700">
+                        Disable 2FA
+                    </button>
+                </div>
+            </form>
+        @endif
     </div>
 
 </div>
