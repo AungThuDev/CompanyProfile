@@ -20,6 +20,12 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone', 
+        'address',
+        'profile', 
+        'bio',
+        'two_factor_enabled',
+        'suspended_at',
         'password',
     ];
 
@@ -40,6 +46,12 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'suspended_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function twoFactorCodes()
+    { 
+        return $this->hasMany(TwoFactorCode::class);
+    }
 }
